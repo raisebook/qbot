@@ -1,6 +1,10 @@
 defmodule QBot do
   use Application
 
+  @moduledoc """
+    Service to pull messages from Queues and get them where they are going
+  """
+
   # See http://elixir-lang.org/docs/stable/elixir/Application.html
   # for more information on OTP Applications
   def start(_type, _args) do
