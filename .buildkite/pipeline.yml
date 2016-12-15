@@ -1,0 +1,11 @@
+steps:
+  - name: ":elixir: Tests"
+    command: '.buildkite/test-and-lint.sh'
+
+  - block: "Build production :docker: image"
+    branches: 'master'
+
+  - name: ":elixir: Build Release Image :docker:"
+    command: ".buildkite/build-release-image.sh"
+    branches: 'master'
+

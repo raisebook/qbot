@@ -1,0 +1,6 @@
+#!/bin/sh
+
+set -eo pipefail
+
+bin/qbot lint
+

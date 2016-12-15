@@ -1,0 +1,17 @@
+version: '2'
+
+networks:
+  default:
+    external:
+      name: raisebook_raisebook-dev-net
+
+services:
+  qbot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: qbot
+    env_file:
+      - ./development.env
+    volumes:
+      - .:/app

@@ -1,0 +1,13 @@
+FROM debian:jessie
+
+RUN apt-get update -y
+RUN apt-get install -y libssl1.0.0 libsctp1
+
+ENV LANG=C.UTF-8
+
+COPY bin/tini-static /sbin/tini-static
+
+COPY rel /rel
+
+ENTRYPOINT ["/sbin/tini-static", "--"]
+CMD ["/rel/qbot/bin/qbot", "foreground"]
