@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Usage: qbot build
+# Summary: Build the development Docker image
+
+docker-compose build qbot $@

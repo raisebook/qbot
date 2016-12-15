@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# Usage: qbot binstub create|remove
+# Summary: Create or remove binstubs
+# Help: Create even shorter binary stubs in the bin directory.
+# To get the full advantage, ./bin should be the first thing in your $PATH.
+
+set -eo pipefail
+
+case "$1" in
+  --complete)
+    echo create
+    echo remove
+  ;;
+  create)
+    for cmd in $(qbot commands); do
+     echo "Created ${cmd}"
+     ln -s "$(dirname "$0")/qbot-${cmd}" "$(dirname "$0")/../../${cmd}"
+    done
+  ;;
+  remove)
+    for cmd in $(qbot commands); do
+      echo "Removed ${cmd}"
+      rm "$(dirname "$0")/../../${cmd}"
+    done
+  ;;
+  *)
+    qbot help binstub
+esac

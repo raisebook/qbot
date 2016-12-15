@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Usage: qbot start
+# Summary: Start the Stockroom application stack
+
+docker-compose up qbot
+
+
+

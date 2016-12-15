@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Usage: stockroom iex
+# Summary: Run an interactive IEx REPL inside the dev container
+
+docker-compose run --rm -e NO_POLL=true qbot iex -S mix run $@

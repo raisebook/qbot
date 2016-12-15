@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Usage: qbot lint
+# Summary: Run the dogma and credo linters over the app
+
+set -eo pipefail
+
+if hash mix 2>/dev/null; then
+  # Running this is an order of magnitude faster without the docker overhead, so
+  # run it locally if we can
+  MIX_ENV=lint mix do dogma, credo
+else
+  docker-compose run --rm --no-deps -e MIX_ENV=lint qbot mix do dogma, credo
+fi

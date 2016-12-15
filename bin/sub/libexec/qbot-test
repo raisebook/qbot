@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Usage: qbot test
+# Summary: Run the specs inside the container
+
+$(dirname "$0")/_compose-run.sh mix espec $@ --trace
+
+

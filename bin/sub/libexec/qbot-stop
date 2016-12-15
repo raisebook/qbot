@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Usage: qbot stop
+# Summary: Stop the Application
+
+docker-compose down
