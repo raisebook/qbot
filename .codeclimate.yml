@@ -1,0 +1,13 @@
+engines:
+  credo:
+    enabled: true
+    channel: beta
+  dogma:
+    enabled: true
+    channel: beta
+  rubocop:
+    enabled: true
+ratings:
+   paths:
+   - "lib/**/*"
+   - "scripts/**/*"
