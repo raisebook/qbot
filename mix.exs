@@ -5,6 +5,7 @@ defmodule QBot.Mixfile do
     [app: :qbot,
      version: "0.1.0",
      elixir: "~> 1.3",
+     preferred_cli_env: [espec: :test],
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps()]
