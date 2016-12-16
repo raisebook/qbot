@@ -16,7 +16,7 @@ config :logger, Rollbax.Logger,
   level: :error
 
 config :logger, :logger_papertrail_backend,
-  host: "logs4.papertrailapp.com:52379",
+  host: "logs5.papertrailapp.com:26166",
   level: :info,
   system_name: "QBot",
   format: "[$level] $levelpad$metadata $message",

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Usage: qbot build-release
+# Summary: Build the production release Docker image
+
+docker-compose run --rm --no-deps qbot-build-release mix do compile, release --verbose

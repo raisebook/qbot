@@ -6,7 +6,7 @@ networks:
       name: raisebook_raisebook-dev-net
 
 services:
-  qbot:
+  qbot: &qbot
     build:
       context: .
       dockerfile: Dockerfile
@@ -15,3 +15,8 @@ services:
       - ./development.env
     volumes:
       - .:/app
+
+  qbot-build-release:
+    <<: *qbot
+    env_file:
+      - ./build-prod.env

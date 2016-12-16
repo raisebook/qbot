@@ -7,7 +7,7 @@ ENV LANG=C.UTF-8
 
 COPY bin/tini-static /sbin/tini-static
 
-COPY rel /rel
+COPY _build/prod/rel /rel
 
 ENTRYPOINT ["/sbin/tini-static", "--"]
 CMD ["/rel/qbot/bin/qbot", "foreground"]

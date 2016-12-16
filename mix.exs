@@ -12,7 +12,9 @@ defmodule QBot.Mixfile do
   end
 
   def application do
-    [applications: [:logger, :logger_papertrail_backend, :rollbax, :apex],
+    [applications: [
+      :logger, :logger_papertrail_backend, :rollbax, :apex,
+      :ex_aws],
      mod: {QBot, []}]
   end
 
