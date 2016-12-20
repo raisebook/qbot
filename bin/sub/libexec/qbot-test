@@ -2,6 +2,4 @@
 # Usage: qbot test
 # Summary: Run the specs inside the container
 
-$(dirname "$0")/_compose-run.sh mix espec $@ --trace
-
-
+$(dirname "$0")/_compose-run.sh mix espec $@ --no-start --trace
