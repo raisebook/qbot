@@ -3,6 +3,10 @@ use Mix.Config
 # The System.get_env variables are evaluated at *COMPILE TIME*, so make sure they are set
 # When you are building the release
 
+config :qbot,
+  worker_count: 4,
+  aws_stack: "production"
+
 # We use the instance role for production
 config :ex_aws,
   region: "ap-southeast-2"

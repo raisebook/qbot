@@ -14,6 +14,10 @@ defmodule QBot do
 
     Logger.info "QBot has started"
 
+    auto_config = QBot.ConfigAutoDiscovery.discover
+    Logger.info "Got Auto-Discovery config:"
+    Logger.info auto_config
+
     # Define workers and child supervisors to be supervised
     children = [supervisor(QBot.TaskSupervisor, [worker_count], restart: :permanent)]
 

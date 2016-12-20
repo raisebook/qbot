@@ -14,13 +14,15 @@ defmodule QBot.Mixfile do
   def application do
     [applications: [
       :logger, :logger_papertrail_backend, :rollbax, :apex,
-      :ex_aws],
+      :ex_aws, :sweet_xml, :poison],
      mod: {QBot, []}]
   end
 
   defp deps do
     [
-      {:ex_aws, "~> 1.0.0-rc4"},
+      {:ex_aws, git: "https://github.com/raisebook/ex_aws", branch: "feature/cloudformation"},
+      {:sweet_xml, "0.6.3"},
+      {:poison, "2.2.0"},
       {:distillery, "1.0.0"},
       {:logger_papertrail_backend, "0.1.1"},
       {:rollbax, "0.8.0"},

@@ -1,7 +1,8 @@
 use Mix.Config
 
 config :qbot,
-  worker_count: 4
+  worker_count: 1,
+  aws_stack: "development"
 
 config :rollbax,
   access_token: "unset-for-dev-we-only-log",
