@@ -1,7 +1,7 @@
 use Mix.Config
 
 config :qbot,
-  worker_count: 1,
+  workers_per_queue: 1,
   aws_stack: "development"
 
 config :rollbax,

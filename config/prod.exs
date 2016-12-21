@@ -4,7 +4,7 @@ use Mix.Config
 # When you are building the release
 
 config :qbot,
-  worker_count: 4,
+  workers_per_queue: 1,
   aws_stack: "production"
 
 # We use the instance role for production

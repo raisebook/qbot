@@ -5,12 +5,12 @@ defmodule QBot.Poller do
 
   require Logger
 
-  def poll(worker_id) do
+  def poll(config, worker_id) do
     if System.get_env("NO_POLL") == "true" do
       Logger.info("Application started with NO_POLL")
       wait_forever
     else
-      polling_loop(worker_id)
+      polling_loop(config, worker_id)
     end
   end
 
@@ -18,16 +18,16 @@ defmodule QBot.Poller do
     :timer.sleep(1_000)
   end
 
-  defp polling_loop(worker_id) do
+  defp polling_loop(config, worker_id) do
     try do
-      Logger.debug "Doing a poll on worker id: #{worker_id}"
+      Logger.info "Doing a poll on worker id: #{worker_id}"
       process_message
     rescue
       exception ->
         Rollbax.report(:error, exception, System.stacktrace())
         exit :rollbar_caught_exception
     end
-    polling_loop(worker_id)
+    polling_loop(config, worker_id)
   end
 
   defp wait_forever do

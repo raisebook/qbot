@@ -10,16 +10,18 @@ defmodule QBot do
   # for more information on OTP Applications
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
-    worker_count = Application.get_env(:qbot, :worker_count)
+    workers_per_queue = Application.get_env(:qbot, :workers_per_queue)
 
     Logger.info "QBot has started"
 
     auto_config = QBot.ConfigAutoDiscovery.discover
     Logger.info "Got Auto-Discovery config:"
-    Logger.info auto_config
+    Logger.info inspect(auto_config)
 
     # Define workers and child supervisors to be supervised
-    children = [supervisor(QBot.TaskSupervisor, [worker_count], restart: :permanent)]
+    children = [supervisor(QBot.TaskSupervisor, [{auto_config, workers_per_queue}],
+                           restart: :permanent)
+               ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
     # for other strategies and supported options
@@ -29,7 +31,7 @@ defmodule QBot do
 
   defmodule TaskSupervisor do
     @moduledoc """
-    OTP Superviros for the Poller workers
+    OTP Supervisor for the Poller workers
     """
 
     use Supervisor
@@ -39,11 +41,16 @@ defmodule QBot do
       Supervisor.start_link(__MODULE__, arg, name: __MODULE__)
     end
 
-    def init(count) do
-      Logger.info "QBot starting #{count} workers"
-      tasks = Enum.map(1..count, fn(id) ->
-        worker(Task, [fn -> QBot.Poller.poll(id) end], id: id)
+    def init({auto_config, count}) do
+      Logger.info "QBot starting workers, #{count} per queue}"
+
+      tasks = auto_config |> Enum.flat_map(fn config ->
+        1..count |> Enum.map(fn c ->
+          id = "#{config[:queue_name]}_#{c}"
+          worker(Task, [fn -> QBot.Poller.poll(config, id) end], id: id)
+         end)
       end)
+
       supervise(tasks, strategy: :one_for_one, max_restarts: 3)
     end
   end
