@@ -16,7 +16,7 @@ defmodule QBot.ConfigAutoDiscovery do
                        &(Map.get(&1, :logical_resource_id)))
   end
 
-  def get_queue_metadata(queues) do
+  defp get_queue_metadata(queues) do
     map_values = fn q ->
       %{
         queue_name: q[:logical_resource_id],
