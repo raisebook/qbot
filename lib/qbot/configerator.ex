@@ -1,7 +1,7 @@
-defmodule QBot.ConfigAutoDiscovery do
+defmodule QBot.Configerator do
   @moduledoc false
 
-  def discover do
+  def discover! do
     get_all_sqs_queues
     |> get_queue_metadata
   end
@@ -18,8 +18,8 @@ defmodule QBot.ConfigAutoDiscovery do
 
   defp get_queue_metadata(queues) do
     map_values = fn q ->
-      %{
-        queue_name: q[:logical_resource_id],
+      %QBot.QueueConfig{
+        name: q[:logical_resource_id],
         target: q |> get_in([:metadata, "QBotEndpoint"]),
         sqs_url:  q[:physical_resource_id]
        }

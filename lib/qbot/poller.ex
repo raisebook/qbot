@@ -2,6 +2,7 @@ defmodule QBot.Poller do
   @moduledoc """
   Provides poll/1, which runs in an infinite loop.
   """
+  alias QBot.QueueConfig
 
   require Logger
 
@@ -14,14 +15,16 @@ defmodule QBot.Poller do
     end
   end
 
-  def process_message do
+  def process_message(%QueueConfig{} = _config) do
+
     :timer.sleep(1_000)
+
   end
 
   defp polling_loop(config, worker_id) do
     try do
       Logger.info "Doing a poll on worker id: #{worker_id}"
-      process_message
+      config |> process_message
     rescue
       exception ->
         Rollbax.report(:error, exception, System.stacktrace())

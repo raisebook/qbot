@@ -1,27 +1,27 @@
-defmodule QBot.ConfigAutoDiscoverySpec do
+defmodule QBot.ConfigeratorSpec do
   use ESpec
 
   alias ExAws.Operation.Query
+  alias QBot.QueueConfig
 
-  describe "ConfigAutoDiscovery" do
-    describe "discover/0" do
+  describe "discover!/0" do
 
-      subject do: QBot.ConfigAutoDiscovery.discover
+    subject do: QBot.Configerator.discover!
 
-      before do
-        allow ExAws |> to(accept :request, fn req -> mock_decider(req) end)
-      end
+    before do
+      allow ExAws |> to(accept :request, fn req -> mock_decider(req) end)
+    end
 
-      it "returns a map of config data from Cloudformation metadata" do
-        expected_config = [
-          %{queue_name: "WithMeta",
-             target:  "arn:aws:lambda:ap-southeast-2:038451313208:function:target-lambda",
-             sqs_url: "https://sqs.ap-southeast-2.amazonaws.com/038451313208/test-queue"
-            }
-          ]
+    it "returns a map of config data from Cloudformation metadata" do
+      expected_config = [
+        %QueueConfig{
+           name:    "WithMeta",
+           target:  "arn:aws:lambda:ap-southeast-2:038451313208:function:target-lambda",
+           sqs_url: "https://sqs.ap-southeast-2.amazonaws.com/038451313208/test-queue"
+          }
+        ]
 
-        expect subject() |> to(eq expected_config)
-      end
+      expect subject() |> to(eq expected_config)
     end
   end
 
