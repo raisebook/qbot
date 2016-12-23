@@ -7,7 +7,7 @@
   "dogma": {:hex, :dogma, "0.1.13", "7b6c6ad2b3ee6501eda3bd39e197dd5198be8d520d1c175c7f713803683cf27a", [:mix], [{:poison, ">= 2.0.0", [hex: :poison, optional: false]}]},
   "espec": {:hex, :espec, "1.2.0", "93a057d9b200619c6a64676f27b5e7d3d6d80097763232a76bb88d8b0c3db28d", [:mix], [{:meck, "~> 0.8.4", [hex: :meck, optional: false]}]},
   "ex_aws": {:git, "https://github.com/raisebook/ex_aws", "16ca7b876f61cca02a4cfcb81c147f10857a22c7", [branch: "feature/cloudformation"]},
-  "ex_sqs_service": {:git, "https://github.com/raisebook/ex_sqs_service", "ca458b627a73cf977e64d1a3442d77b45198eda3", []},
+  "ex_sqs_service": {:git, "https://github.com/raisebook/ex_sqs_service", "bbb2699323b891bfb5b606f08802e2e977c7f059", []},
   "gen_stage": {:hex, :gen_stage, "0.8.0", "a76e3f0530f86fae8b8a1021c06527b1ec171cf4c0bdfecd8d5ad0376d1205af", [:mix], []},
   "hackney": {:hex, :hackney, "1.6.3", "d489d7ca2d4323e307bedc4bfe684323a7bf773ecfd77938f3ee8074e488e140", [:mix, :rebar3], [{:certifi, "0.7.0", [hex: :certifi, optional: false]}, {:idna, "1.2.0", [hex: :idna, optional: false]}, {:metrics, "1.0.1", [hex: :metrics, optional: false]}, {:mimerl, "1.0.2", [hex: :mimerl, optional: false]}, {:ssl_verify_fun, "1.1.1", [hex: :ssl_verify_fun, optional: false]}]},
   "idna": {:hex, :idna, "1.2.0", "ac62ee99da068f43c50dc69acf700e03a62a348360126260e87f2b54eced86b2", [:rebar3], []},

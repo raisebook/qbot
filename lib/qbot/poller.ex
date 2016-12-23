@@ -3,6 +3,7 @@ defmodule QBot.Poller do
   Provides poll/1, which runs in an infinite loop.
   """
   alias QBot.QueueConfig
+  alias SqsService.Message
 
   require Logger
 
@@ -15,10 +16,12 @@ defmodule QBot.Poller do
     end
   end
 
-  def process_message(%QueueConfig{} = _config) do
+  def process_message(%QueueConfig{} = config) do
+    config |> QBot.QueueConfig.sqs_queue_name
+           |> SqsService.get_message
+           |> reconfigure_logger_with_uuid
 
-    :timer.sleep(1_000)
-
+    Logger.metadata([uuid: nil])
   end
 
   defp polling_loop(config, worker_id) do
@@ -37,4 +40,14 @@ defmodule QBot.Poller do
     :timer.sleep(10_000)
     wait_forever
   end
+
+  defp reconfigure_logger_with_uuid({:ok, %Message{body: %{"correlation_uuid" => uuid}}} = passthrough) do
+    Logger.configure_backend(LoggerPapertrailBackend.Logger, metadata: [:uuid])
+    Logger.configure_backend(:console, metadata: [:uuid])
+
+    Logger.metadata([uuid: uuid])
+    passthrough
+  end
+  defp reconfigure_logger_with_uuid(passthrough), do: passthrough
+
 end
