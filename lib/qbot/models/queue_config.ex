@@ -8,7 +8,15 @@ defmodule QBot.QueueConfig do
     :sqs_url
   ]
 
-  def sqs_queue_name(%QBot.QueueConfig{} = config) do
-    config.sqs_url |> String.replace(~r/^.*amazonaws.com\//, "")
+  def sqs_queue_name(%QBot.QueueConfig{sqs_url: url}) do
+    url |> String.replace(~r/^.*amazonaws.com\//, "")
+  end
+
+  def endpoint_type(%QBot.QueueConfig{target: t}) do
+    cond do
+      String.match?(t, ~r/^arn:aws:lambda.*/) -> :lambda
+      String.match?(t, ~r/^http.*/) -> :http
+      true -> raise "Un-supported target type for #{t}"
+    end
   end
 end
