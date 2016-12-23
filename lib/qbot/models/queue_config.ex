@@ -15,7 +15,7 @@ defmodule QBot.QueueConfig do
   def endpoint_type(%QBot.QueueConfig{target: t}) do
     cond do
       String.match?(t, ~r/^arn:aws:lambda.*/) -> :lambda
-      String.match?(t, ~r/^http.*/) -> :http
+      String.match?(t, ~r/^http.*/)           -> :http
       true -> raise "Un-supported target type for #{t}"
     end
   end

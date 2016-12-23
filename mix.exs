@@ -14,7 +14,7 @@ defmodule QBot.Mixfile do
   def application do
     [applications: [
       :logger, :logger_papertrail_backend, :rollbax, :apex,
-      :ex_aws, :sweet_xml, :poison],
+      :ex_aws, :sweet_xml, :poison, :httpoison],
      mod: {QBot, []}]
   end
 
@@ -24,6 +24,7 @@ defmodule QBot.Mixfile do
       {:ex_sqs_service, git: "https://github.com/raisebook/ex_sqs_service"},
       {:sweet_xml, "0.6.3"},
       {:poison, "2.2.0"},
+      {:httpoison, "~> 0.10.0"},
       {:distillery, "1.0.0"},
       {:logger_papertrail_backend, "0.1.1"},
       {:rollbax, "0.8.0"},
