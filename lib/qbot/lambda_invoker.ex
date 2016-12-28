@@ -1,4 +1,8 @@
 defmodule QBot.LambdaInvoker do
+   @moduledoc """
+   Directly Invokes the target AWS Lambda function with the payload
+   """
+
   alias QBot.QueueConfig
   alias SqsService.Message
 

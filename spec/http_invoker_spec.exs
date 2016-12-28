@@ -24,7 +24,8 @@ defmodule QBot.HttpInvokerSpec do
       let config: %QueueConfig{}
 
       subject do: HttpInvoker.invoke!(message(), config())
-      pending "it does an HTTP POST top the target"
+      pending "it does an HTTP POST to the target"
+      pending "it POSTs the message body"
     end
 
 
@@ -49,7 +50,7 @@ defmodule QBot.HttpInvokerSpec do
     end
 
     describe "payload_from/1" do
-      subject do: HttpInvoker.payload(message())
+      subject do: HttpInvoker.post_body(message())
 
       context "wrapped with the payload key" do
         it "returns the unwrapped payload" do
