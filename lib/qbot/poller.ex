@@ -29,8 +29,8 @@ defmodule QBot.Poller do
   defp invoke({:no_message, _} = passthrough, _), do: passthrough
   defp invoke({:ok, %Message{} = message}, %QueueConfig{} = config) do
     case config |> QueueConfig.endpoint_type do
-      :lambda -> QBot.LambdaInvoker.invoke!(message, config)
-      :http   -> QBot.HttpInvoker.invoke!(message, config)
+      :lambda -> QBot.Invoker.Lambda.invoke!(message, config)
+      :http   -> QBot.Invoker.Http.invoke!(message, config)
     end
   end
 

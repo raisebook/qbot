@@ -1,9 +1,9 @@
-defmodule QBot.HttpInvokerSpec do
-  use ESpec
+defmodule QBot.Invoker.HttpSpec do
+  use ESpec, async: false
 
   alias SqsService.Message
   alias QBot.QueueConfig
-  alias QBot.HttpInvoker
+  alias QBot.Invoker.Http
 
   describe "HttpInvoker" do
       # SQS Service delivers the body with string keys
@@ -22,7 +22,7 @@ defmodule QBot.HttpInvokerSpec do
     describe "invoke/2" do
       let config: %QueueConfig{target: "https://test.endpoint/"}
 
-      subject do: HttpInvoker.invoke!(message(), config())
+      subject do: Http.invoke!(message(), config())
 
       before do: allow HTTPoison |> to(accept :post, fn(_,_,_) -> mock_http_call end)
 
@@ -38,7 +38,7 @@ defmodule QBot.HttpInvokerSpec do
         expect HTTPoison |> to(accepted :post, :any, count: 1)
 
         [{_,{HTTPoison, :post, [_, body, _]},_}] = :meck.history(HTTPoison)
-        expect body |> to(eq HttpInvoker.post_body(message()))
+        expect body |> to(eq Http.post_body(message()))
       end
 
       it "sends the headers" do
@@ -46,12 +46,12 @@ defmodule QBot.HttpInvokerSpec do
         expect HTTPoison |> to(accepted :post, :any, count: 1)
 
         [{_,{HTTPoison, :post, [_, _, headers]},_}] = :meck.history(HTTPoison)
-        expect headers |> to(eq HttpInvoker.http_headers(message()))
+        expect headers |> to(eq Http.http_headers(message()))
       end
     end
 
     describe "http_headers_from/1" do
-      subject do: HttpInvoker.http_headers(message())
+      subject do: Http.http_headers(message())
 
       it "pulls the correlation id from metadata into X-Request-ID" do
         expect subject() |> to(have_any &match?({"X-Request-ID", "12345-12345-12345-12345"}, &1))
@@ -71,7 +71,7 @@ defmodule QBot.HttpInvokerSpec do
     end
 
     describe "post_body/1" do
-      subject do: HttpInvoker.post_body(message())
+      subject do: Http.post_body(message())
 
       context "wrapped with the payload key" do
         it "returns the unwrapped payload as JSON" do

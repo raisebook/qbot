@@ -1,4 +1,4 @@
-defmodule QBot.HttpInvoker do
+defmodule QBot.Invoker.Http do
   @moduledoc """
   Does HTTPS calls to the configured message target
   """

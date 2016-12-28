@@ -35,7 +35,7 @@ Resources:
       etc: ...
 ```
 
-If given a lambda ARN, then it will be invoked, and http(s) endpoints will be POST'ed to
+If given a lambda ARN, then it will be (synchronously) invoked, and http(s) endpoints will be POST'ed to
  
 ### Step 2
 
@@ -58,6 +58,7 @@ Either send a message to the SQS queue directly (or pass it along from an SNS To
 * Metadata block is optional
 * If there is no metadata, wrapping the payload in a "payload" key is optional
 * The payload itself should be in JSON format
+* For Lambda invocations, the message will be passed through, as-is.
 
 
 
