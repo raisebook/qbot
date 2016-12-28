@@ -17,10 +17,10 @@ defmodule QBot.HttpInvoker do
 
   def http_headers(%Message{body: %{"metadata" => metadata}}) do
     metadata |> Enum.flat_map(fn {key, value} ->
-      case key do
-        "CorrelationUUID" -> %{"X-Request-ID"   => value}
-              "RequestID" -> %{"X-Request-ID"   => value}
-          "Authorization" -> %{"Authorization"  => value}
+      case key |> String.downcase do
+        "correlationuuid" -> %{"X-Request-ID"   => value}
+              "requestid" -> %{"X-Request-ID"   => value}
+          "authorization" -> %{"Authorization"  => value}
                         _ -> %{}
       end
     end)
@@ -29,10 +29,11 @@ defmodule QBot.HttpInvoker do
 
 
   def post_body(%Message{body: body}) do
-    case body do
-      %{"payload" => payload} -> payload
-                 bare_payload -> bare_payload
+    {:ok, result} = case body do
+      %{"payload" => payload} -> payload |> Poison.encode
+                 bare_payload -> bare_payload |> Poison.encode
     end
+    result
   end
 
 end

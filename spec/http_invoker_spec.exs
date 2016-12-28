@@ -7,7 +7,7 @@ defmodule QBot.HttpInvokerSpec do
 
   describe "HttpInvoker" do
       # SQS Service delivers the body with string keys
-      let payload_json: ~S|{"some": "data", "wrapped": "here"}|
+      let payload: %{"some" => "data", "wrapped" => "here"}
 
       let message: %Message{body:
         %{ "metadata" => %{
@@ -15,7 +15,7 @@ defmodule QBot.HttpInvokerSpec do
            "NotForTheHeader" => "DiscardMe",
            "Authorization" => "Bearer supers3cret"
          },
-         "payload" => payload_json()
+         "payload" => payload()
       }
     }
 
@@ -38,7 +38,7 @@ defmodule QBot.HttpInvokerSpec do
         expect HTTPoison |> to(accepted :post, :any, count: 1)
 
         [{_,{HTTPoison, :post, [_, body, _]},_}] = :meck.history(HTTPoison)
-        expect body |> to(eq payload_json())
+        expect body |> to(eq HttpInvoker.post_body(message()))
       end
 
       it "sends the headers" do
@@ -70,20 +70,20 @@ defmodule QBot.HttpInvokerSpec do
       end
     end
 
-    describe "payload_from/1" do
+    describe "post_body/1" do
       subject do: HttpInvoker.post_body(message())
 
       context "wrapped with the payload key" do
-        it "returns the unwrapped payload" do
-          expect subject() |> to(eq(payload_json()))
+        it "returns the unwrapped payload as JSON" do
+          expect subject() |> to(eq ~S|{"wrapped":"here","some":"data"}|)
         end
       end
 
       context "bare payload" do
-        let message: %Message{body: "body payload"}
+        let message: %Message{body: %{"body" => "payload"}}
 
-        it "returns the payload as given" do
-          expect subject() |> to(eq("body payload"))
+        it "returns the whole payload as JSON" do
+          expect subject() |> to(eq ~S|{"body":"payload"}|)
         end
       end
     end
