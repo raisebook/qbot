@@ -13,8 +13,8 @@ defmodule QBot.Mixfile do
 
   def application do
     [applications: [
-      :logger, :logger_papertrail_backend, :rollbax, :apex,
-      :ex_aws, :sweet_xml, :poison, :httpoison],
+      :httpoison, :logger, :logger_papertrail_backend, :rollbax, :apex,
+      :ex_aws, :ex_sqs_service, :sweet_xml, :poison],
      mod: {QBot, []}]
   end
 
