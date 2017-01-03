@@ -2,12 +2,22 @@
 
 set -eo pipefail
 
-IMAGE=raisebook/qbot:prod-${BUILDKITE_COMMIT:-local}
+ECS_CLUSTER=$(buildkite-agent meta-data get "ecs_cluster")
+
+case ${ECS_CLUSTER} in
+  default)
+    DOCKER_TAG_PREFIX=production
+    ;;
+  *)
+    DOCKER_TAG_PREFIX=${ECS_CLUSTER}
+esac
+buildkite-agent meta-data set "docker_tag_prefix" ${DOCKER_TAG_PREFIX}
+
+IMAGE=raisebook/qbot:${DOCKER_TAG_PREFIX}-${BUILDKITE_COMMIT:-local}
 
 function inline_image {
   printf '\033]1338;url='"$1"';alt='"$2"'\a\n'
 }
-
 
 if [[ $(docker network ls | grep --count raisebook_raisebook-dev-net) -eq 0 ]]; then
   docker network create raisebook_raisebook-dev-net

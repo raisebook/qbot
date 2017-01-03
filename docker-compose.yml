@@ -20,3 +20,19 @@ services:
     <<: *qbot
     env_file:
       - ./build-prod.env
+
+  deployment:
+    image: raisebook/deploy:0ee2c1d2762c252d8b8ec1fc302d121fa063a542
+    volumes:
+      - .:/app
+    tmpfs:
+      - /tmp
+    environment:
+      AWS_ACCESS_KEY_ID:
+      AWS_SECRET_ACCESS_KEY:
+      AWS_DEFAULT_REGION:
+      ECS_CLUSTER:
+      DOCKER_TAG_PREFIX:
+      BUILDKITE_COMMIT:
+      BUILDKITE_BUILD_CREATOR:
+      ROLLBAR_ACCESS_TOKEN_KMS: "AQECAHgBe/Bo6N6P3DZu2j8rSbOworqekgIES5evTHicjBhp6AAAAH4wfAYJKoZIhvcNAQcGoG8wbQIBADBoBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDAwpbxxeLfqMGD2ajgIBEIA7P7Oi/L6t8TGkvLNNZev0u3WJj6pJE+G7CPii1QwihGLGqyEfbC1NI84H9nH5eCq6ff6GsPJoGUM3lXo="

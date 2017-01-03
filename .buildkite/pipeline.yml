@@ -2,10 +2,22 @@ steps:
   - name: ":elixir: Tests"
     command: '.buildkite/test-and-lint.sh'
 
-  - block: "Build production :docker: image"
+  - block: "::rotating_light:: Deploy :rotating_light:"
     branches: 'master'
+    fields:
+      - select: "ECS Cluster"
+        key: ecs_cluster
+        required: true
+        options:
+         - label: "production"
+           value: "default"
+         - label: "complaince"
+           value: "complaince"
 
   - name: ":elixir: Build Release Image :docker:"
     command: ".buildkite/build-release-image.sh"
     branches: 'master'
 
+  - name: ":ecs: Deploy"
+    command: ".buildkite/deploy-to-ecs.sh"
+    branches: 'master'
