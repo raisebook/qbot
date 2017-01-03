@@ -2,7 +2,7 @@
 
 set -eo pipefail
 
-ECS_CLUSTER=$(buildkite-agent meta-data get "ecs_cluster")
+ECS_CLUSTER=$(buildkite-agent meta-data get "ecs-cluster")
 
 case ${ECS_CLUSTER} in
   default)
