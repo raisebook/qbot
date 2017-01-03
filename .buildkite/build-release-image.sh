@@ -11,7 +11,7 @@ case ${ECS_CLUSTER} in
   *)
     DOCKER_TAG_PREFIX=${ECS_CLUSTER}
 esac
-buildkite-agent meta-data set "docker_tag_prefix" ${DOCKER_TAG_PREFIX}
+buildkite-agent meta-data set "docker-tag-prefix" ${DOCKER_TAG_PREFIX}
 
 IMAGE=raisebook/qbot:${DOCKER_TAG_PREFIX}-${BUILDKITE_COMMIT:-local}
 

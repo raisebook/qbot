@@ -2,7 +2,7 @@
 
 set -eo pipefail
 
-export ECS_CLUSTER=$(buildkite-agent meta-data get "ecs_cluster")
-export DOCKER_TAG_PREFIX=$(buildkite-agent meta-data set "docker_tag_prefix")
+export ECS_CLUSTER=$(buildkite-agent meta-data get "ecs-cluster")
+export DOCKER_TAG_PREFIX=$(buildkite-agent meta-data set "docker-tag-prefix")
 
 docker-compose run --rm deployment ./deploy_ecs.rb

@@ -6,13 +6,13 @@ steps:
     branches: 'master'
     fields:
       - select: "ECS Cluster"
-        key: ecs_cluster
+        key: ecs-cluster
         required: true
         options:
          - label: "production"
            value: "default"
-         - label: "complaince"
-           value: "complaince"
+         - label: "compliance"
+           value: "compliance"
 
   - name: ":elixir: Build Release Image :docker:"
     command: ".buildkite/build-release-image.sh"
