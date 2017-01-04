@@ -1,6 +1,6 @@
 ---
 family: <%= family('qbot') %>
-taskRoleArn: arn:aws:iam::038451313208:role/QBotEcsTaskRole
+taskRoleArn: <%= ecs_task_role('qbot') %>
 containerDefinitions:
 - name: qbot
   image: raisebook/qbot:<%= docker_image_tag %>
