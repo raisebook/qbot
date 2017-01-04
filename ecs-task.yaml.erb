@@ -11,11 +11,6 @@ containerDefinitions:
   - hostPort: 4000
     containerPort: 4000
     protocol: tcp
-  environment:
-  - name: GRAPHQL_TOKEN
-    value: <%= kms_decrypt('AQECAHgBe/Bo6N6P3DZu2j8rSbOworqekgIES5evTHicjBhp6AAAAGYwZAYJKoZIhvcNAQcGoFcwVQIBADBQBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDFNxQr0qVoBNUBqeAwIBEIAjNsk84JxgoVwXVk8lvxS308Gt8mUeMMYCTnbrkmRuoZyUUFU=') %>
-  - name: STOCKROOM_GRAPHQL_ENDPOINT
-    value: https://stockroom.api.raisebook.com/graphql
   logConfiguration:
     logDriver: syslog
     options:
