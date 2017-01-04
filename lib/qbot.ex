@@ -12,9 +12,7 @@ defmodule QBot do
 
     Logger.info "QBot has started"
 
-    auto_config = QBot.Configerator.discover!
-    Logger.info "Got Auto-Discovery config:"
-    Logger.info inspect(auto_config)
+    auto_config = wait_for_config([])
 
     children = [supervisor(QBot.TaskSupervisor, [{auto_config, workers_per_queue}],
                            restart: :permanent)
@@ -23,6 +21,18 @@ defmodule QBot do
     opts = [strategy: :one_for_one, name: QBot.Supervisor]
     {:ok, _pid} = Supervisor.start_link(children, opts)
   end
+
+  def wait_for_config([]) do
+    auto_config = QBot.Configerator.discover!
+    Logger.info "Got Auto-Discovery config:"
+    Logger.info inspect(auto_config)
+
+    if auto_config == [] do
+      :timer.sleep(Application.get_env(:qbot, :config_poll_delay_sec) * 1000)
+    end
+    wait_for_config(auto_config)
+  end
+  def wait_for_config(config), do: config
 
   defmodule TaskSupervisor do
     @moduledoc """
