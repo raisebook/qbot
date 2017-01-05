@@ -13,6 +13,9 @@ case ${ECS_CLUSTER} in
 esac
 buildkite-agent meta-data set "docker-tag-prefix" ${DOCKER_TAG_PREFIX}
 
+# Set the MIX_ENV for the compilation step to the target cluster name / env
+export MIX_ENV=${DOCKER_TAG_PREFIX}
+
 IMAGE=raisebook/qbot:${DOCKER_TAG_PREFIX}-${BUILDKITE_COMMIT:-local}
 
 function inline_image {
