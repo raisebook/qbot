@@ -13,6 +13,12 @@ use Mix.Releases.Config,
 # when building in that environment, this combination of release
 # and environment configuration is called a profile
 
+environment :compliance do
+  set include_erts: true
+  set include_src: false
+  set cookie: :"r&)yXF~oKN>efpTFabfi=3SwBAn:_XTIBM;K8I2x!)!EifIf<#;ZbZD=+hCz`nI~"
+end
+
 environment :prod do
   set include_erts: true
   set include_src: false
