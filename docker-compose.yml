@@ -18,10 +18,9 @@ services:
 
   qbot-build-release:
     <<: *qbot
-    qbot: &qbot
-      build:
-        args:
-          MIX_ENV:
+    build:
+      args:
+        MIX_ENV:
     env_file:
       - ./build-prod.env
 
