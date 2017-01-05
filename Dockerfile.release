@@ -7,7 +7,8 @@ ENV LANG=C.UTF-8
 
 COPY bin/tini-static /sbin/tini-static
 
-COPY _build/prod/rel /rel
+ARG MIX_ENV=prod
+COPY _build/${MIX_ENV}/rel /rel
 
 ENTRYPOINT ["/sbin/tini-static", "--"]
 CMD ["/rel/qbot/bin/qbot", "foreground"]
