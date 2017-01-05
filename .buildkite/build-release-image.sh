@@ -13,9 +13,6 @@ case ${ECS_CLUSTER} in
 esac
 buildkite-agent meta-data set "docker-tag-prefix" ${DOCKER_TAG_PREFIX}
 
-# Set the MIX_ENV for the compilation step to the target cluster name / env
-export MIX_ENV=${DOCKER_TAG_PREFIX}
-
 IMAGE=raisebook/qbot:${DOCKER_TAG_PREFIX}-${BUILDKITE_COMMIT:-local}
 
 function inline_image {
@@ -27,6 +24,9 @@ if [[ $(docker network ls | grep --count raisebook_raisebook-dev-net) -eq 0 ]]; 
 fi
 
 echo "--- Building the Elixir Release bundle"
+# Set the MIX_ENV for the compilation step to the target cluster name / env
+export MIX_ENV=${DOCKER_TAG_PREFIX}
+
 bin/qbot mix deps.get
 bin/qbot build-release
 
@@ -35,7 +35,7 @@ echo "--- Building the Production Docker image"
 # They get that way because they were built inside of a docker container, with weird uid mappings
 sudo /usr/bin/fix-buildkite-agent-builds-permissions
 
-docker build -t "${IMAGE}" -f Dockerfile.release .
+docker build --build-arg MIX_ENV=${MIX_ENV} -t "${IMAGE}" -f Dockerfile.release .
 docker push "${IMAGE}"
 
 inline_image 'http://i.giphy.com/l3vRi71UbYn4PXcKk.gif' 'SHIPIT'

@@ -7,7 +7,7 @@ ENV LANG=C.UTF-8
 
 COPY bin/tini-static /sbin/tini-static
 
-ARG MIX_ENV=prod
+ARG MIX_ENV
 COPY _build/${MIX_ENV}/rel /rel
 
 ENTRYPOINT ["/sbin/tini-static", "--"]

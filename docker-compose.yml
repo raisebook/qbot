@@ -18,11 +18,6 @@ services:
 
   qbot-build-release:
     <<: *qbot
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        MIX_ENV:
     env_file:
       - ./build-prod.env
 
