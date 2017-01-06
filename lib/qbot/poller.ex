@@ -36,7 +36,7 @@ defmodule QBot.Poller do
 
   defp polling_loop(config, worker_id) do
     try do
-      Logger.info "Doing a poll on worker id: #{worker_id}"
+      Logger.debug "Doing a poll on worker id: #{worker_id}"
       config |> process_message
     rescue
       exception ->
