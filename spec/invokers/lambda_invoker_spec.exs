@@ -25,17 +25,17 @@ defmodule QBot.Invoker.LambdaSpec do
     end
 
     context "error from the lambda function" do
-      let payload: %{"error" => "this function will fail on the remote end"}
+      let payload: %{"error" => "remote fail"}
 
       it "raises with the error from the remote" do
-        expect(fn -> subject() end) |> to(raise_exception(RuntimeError, "this function will fail on the remote end"))
+
+        expect(fn -> subject() end) |> to(raise_exception(RuntimeError, "remote fail"))
       end
     end
   end
-
   def mock_aws(%ExAws.Operation.JSON{service: :lambda, data: data}) do
     case data do
-      %{"error" => message} -> {:ok, %{"errorMessage" => message}}
+      {:ok, ~s({"error":"remote fail"})} -> {:ok, %{"errorMessage" => "remote fail"}}
       _ -> {:ok, nil}
     end
   end
