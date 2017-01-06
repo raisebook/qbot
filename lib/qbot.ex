@@ -9,17 +9,21 @@ defmodule QBot do
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
     workers_per_queue = Application.get_env(:qbot, :workers_per_queue)
-
     Logger.info "QBot has started"
 
-    auto_config = wait_for_config([])
+    try do
+      auto_config = wait_for_config([])
+      children = [supervisor(QBot.TaskSupervisor, [{auto_config, workers_per_queue}],
+                             restart: :permanent)
+                 ]
 
-    children = [supervisor(QBot.TaskSupervisor, [{auto_config, workers_per_queue}],
-                           restart: :permanent)
-               ]
-
-    opts = [strategy: :one_for_one, name: QBot.Supervisor]
-    {:ok, _pid} = Supervisor.start_link(children, opts)
+      opts = [strategy: :one_for_one, name: QBot.Supervisor]
+      {:ok, _pid} = Supervisor.start_link(children, opts)
+    rescue
+      exception ->
+        Rollbax.report(:error, exception, System.stacktrace())
+        exit :rollbar_caught_exception
+    end
   end
 
   def wait_for_config([]) do
@@ -46,7 +50,7 @@ defmodule QBot do
       Supervisor.start_link(__MODULE__, arg, name: __MODULE__)
     end
 
-    def init({[%QBot.QueueConfig{}] = auto_config, count}) do
+    def init({auto_config, count}) do
       Logger.info "QBot starting workers, #{count} per queue}"
 
       tasks = auto_config |> Enum.flat_map(fn config ->
