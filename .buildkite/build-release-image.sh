@@ -7,10 +7,13 @@ ECS_CLUSTER=$(buildkite-agent meta-data get "ecs-cluster")
 case ${ECS_CLUSTER} in
   default)
     DOCKER_TAG_PREFIX=production
+    export MIX_ENV=prod
     ;;
   *)
     DOCKER_TAG_PREFIX=${ECS_CLUSTER}
+    export MIX_ENV=${ECS_CLUSTER}
 esac
+
 buildkite-agent meta-data set "docker-tag-prefix" ${DOCKER_TAG_PREFIX}
 
 IMAGE=raisebook/qbot:${DOCKER_TAG_PREFIX}-${BUILDKITE_COMMIT:-local}
@@ -24,9 +27,6 @@ if [[ $(docker network ls | grep --count raisebook_raisebook-dev-net) -eq 0 ]]; 
 fi
 
 echo "--- Building the Elixir Release bundle"
-# Set the MIX_ENV for the compilation step to the target cluster name / env
-export MIX_ENV=${DOCKER_TAG_PREFIX}
-
 bin/qbot mix deps.get
 bin/qbot build-release
 
