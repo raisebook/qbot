@@ -9,6 +9,7 @@ defmodule QBot.Invoker.Lambda do
   require Logger
 
   def invoke!(%Message{body: body} = message, %QueueConfig{target: target}) do
+    Logger.info "Invoking #{target} with: #{inspect(body)}"
     result = target |> ExAws.Lambda.invoke(body |> Poison.encode, %{})
                     |> ExAws.request
 
