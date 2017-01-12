@@ -50,7 +50,7 @@ defmodule QBot.Invoker.Http do
   defp decrypt(value) do
     value |> String.split(" ")
           |> Enum.map(fn token ->
-          case  Regex.run(~r/^KMS\[(.+)\]$/, token) do
+          case  Regex.run(~r/^decrypt\((.+)\)$/, token) do
               [_, encrypted] -> encrypted |> String.upcase
               _ -> token
             end
