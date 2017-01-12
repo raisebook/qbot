@@ -79,7 +79,7 @@ defmodule QBot.Invoker.HttpSpec do
 
       subject do: Http.http_headers(message(), config())
 
-      it "pulls the correlation id from metadata into X-Request-ID",focus: true do
+      it "pulls the correlation id from metadata into X-Request-ID" do
         expect subject() |> to(have_any &match?({"X-Request-ID", "12345-12345-12345-12345"}, &1))
       end
 
