@@ -105,6 +105,16 @@ defmodule QBot.Invoker.HttpSpec do
         it "passes through auth tokens from config" do
           expect subject() |> to(have_any &match?({"Authorization", "Bearer raisebook"}, &1))
         end
+
+        context "with encrypted headers in config" do
+          let config: %QueueConfig{target: "https://test.endpoint/", headers: %{ "Authorization" => "Bearer decrypt(raisebook)" }}
+
+          it "decrypts encrypted strings" do
+            result = {:ok, %{"Plaintext" => ("raisebook-decrypted" |> Base.encode64)}}
+            allow ExAws |> to(accept :request, fn _ -> result end)
+            expect subject() |> to(have_any &match?({"Authorization", "Bearer raisebook-decrypted"}, &1))
+          end
+        end
       end
     end
 

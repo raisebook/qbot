@@ -47,11 +47,20 @@ defmodule QBot.Invoker.Http do
     result
   end
 
+  defp decrypt_key(key) do
+    {:ok, %{ "Plaintext" => plaintext }} = key
+    |> ExAws.KMS.decrypt
+    |> ExAws.request
+
+    {:ok, decrypted} = plaintext |> Base.decode64
+    decrypted
+  end
+
   defp decrypt(value) do
     value |> String.split(" ")
           |> Enum.map(fn token ->
           case  Regex.run(~r/^decrypt\((.+)\)$/, token) do
-              [_, encrypted] -> encrypted |> String.upcase
+              [_, encrypted] -> encrypted |> decrypt_key
               _ -> token
             end
           end)
