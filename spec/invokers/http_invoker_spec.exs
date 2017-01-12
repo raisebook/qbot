@@ -46,7 +46,7 @@ defmodule QBot.Invoker.HttpSpec do
         expect HTTPoison |> to(accepted :post, :any, count: 1)
 
         [{_,{HTTPoison, :post, [_, _, headers]},_}] = :meck.history(HTTPoison)
-        expect headers |> to(eq Http.http_headers(message()))
+        expect headers |> to(eq Http.http_headers(message(),config()))
       end
 
       context "Connection Refused error" do
@@ -74,10 +74,12 @@ defmodule QBot.Invoker.HttpSpec do
       end
     end
 
-    describe "http_headers_from/1" do
-      subject do: Http.http_headers(message())
+    describe "http_headers/2" do
+      let config: %QueueConfig{target: "https://test.endpoint/"}
 
-      it "pulls the correlation id from metadata into X-Request-ID" do
+      subject do: Http.http_headers(message(), config())
+
+      it "pulls the correlation id from metadata into X-Request-ID",focus: true do
         expect subject() |> to(have_any &match?({"X-Request-ID", "12345-12345-12345-12345"}, &1))
       end
 
@@ -90,6 +92,18 @@ defmodule QBot.Invoker.HttpSpec do
 
         it "returns an empty hash" do
           expect subject() |> to(eq %{})
+        end
+      end
+
+      context "with headers in config" do
+        let config: %QueueConfig{target: "https://test.endpoint/", headers: %{ "Authorization" => "Bearer raisebook" }}
+
+        let message: %Message{
+          body: payload()
+        }
+
+        it "passes through auth tokens from config" do
+          expect subject() |> to(have_any &match?({"Authorization", "Bearer raisebook"}, &1))
         end
       end
     end
