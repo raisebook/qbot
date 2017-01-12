@@ -48,7 +48,7 @@ defmodule QBot.Invoker.Http do
   end
 
   defp decrypt_key(key) do
-    {:ok, %{ "Plaintext" => plaintext }} = key
+    {:ok, %{"Plaintext" => plaintext}} = key
     |> ExAws.KMS.decrypt
     |> ExAws.request
 
