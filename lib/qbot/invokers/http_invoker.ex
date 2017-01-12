@@ -7,7 +7,7 @@ defmodule QBot.Invoker.Http do
   alias SqsService.Message
 
   def invoke!(%Message{} = message, %QueueConfig{} = config) do
-    case HTTPoison.post(config.target, post_body(message), http_headers(message)) do
+    case HTTPoison.post(config.target, post_body(message), http_headers(message, config)) do
       {:ok, %HTTPoison.Response{status_code: code}}
         when code >= 200 and code < 300 -> {:ok, message}
       {:ok, %HTTPoison.Response{status_code: code}} -> raise "Got HTTP Status #{code}"
@@ -17,8 +17,16 @@ defmodule QBot.Invoker.Http do
     end
   end
 
-  def http_headers(%Message{body: %{"metadata" => metadata}}) do
-    metadata |> Enum.flat_map(fn {key, value} ->
+  def http_headers(%Message{body: %{"metadata" => metadata}}, %QueueConfig{headers: headers}) do
+    headers |> Map.merge(metadata)
+            |> add_headers
+  end
+  def http_headers(%Message{}, %QueueConfig{headers: headers}), do: add_headers(headers)
+
+  def add_headers(headers) do
+    headers
+    |> Enum.flat_map(fn {k, v} -> %{k => decrypt(v)} end)
+    |> Enum.flat_map(fn {key, value} ->
       case key |> String.downcase do
         "correlationuuid" -> %{"X-Request-ID"   => value}
               "requestid" -> %{"X-Request-ID"   => value}
@@ -27,8 +35,8 @@ defmodule QBot.Invoker.Http do
                         _ -> %{}
       end
     end)
+    |> Enum.into(%{})
   end
-  def http_headers(%Message{}), do: %{}
 
 
   def post_body(%Message{body: body}) do
@@ -39,4 +47,23 @@ defmodule QBot.Invoker.Http do
     result
   end
 
+  defp decrypt_key(key) do
+    {:ok, %{"Plaintext" => plaintext}} = key
+    |> ExAws.KMS.decrypt
+    |> ExAws.request
+
+    {:ok, decrypted} = plaintext |> Base.decode64
+    decrypted
+  end
+
+  defp decrypt(value) do
+    value |> String.split(" ")
+          |> Enum.map(fn token ->
+          case  Regex.run(~r/^decrypt\((.+)\)$/, token) do
+              [_, encrypted] -> encrypted |> decrypt_key
+              _ -> token
+            end
+          end)
+          |> Enum.join(" ")
+  end
 end

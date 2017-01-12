@@ -21,6 +21,7 @@ defmodule QBot.Configerator do
       %QBot.QueueConfig{
         name: q[:logical_resource_id],
         target: q |> get_in([:metadata, "QBotEndpoint"]),
+        headers: q |> get_in([:metadata, "QBotHeaders"]) || %{},
         sqs_url:  q[:physical_resource_id]
        }
     end
