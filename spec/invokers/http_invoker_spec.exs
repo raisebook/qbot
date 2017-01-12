@@ -24,7 +24,7 @@ defmodule QBot.Invoker.HttpSpec do
 
       subject do: Http.invoke!(message(), config())
 
-      before do: allow HTTPoison |> to(accept :post, fn(_,_,_) -> mock_http_call end)
+      before do: allow HTTPoison |> to(accept :post, fn(target,_,_) -> mock_http_call(target) end)
 
       it "does an HTTP POST to the target" do
         subject()
@@ -47,6 +47,30 @@ defmodule QBot.Invoker.HttpSpec do
 
         [{_,{HTTPoison, :post, [_, _, headers]},_}] = :meck.history(HTTPoison)
         expect headers |> to(eq Http.http_headers(message()))
+      end
+
+      context "Connection Refused error" do
+        let config: %QueueConfig{target: "econnrefused"}
+
+        it "raises" do
+          expect(fn -> subject() end) |> to(raise_exception(RuntimeError, ":econnrefused"))
+        end
+      end
+
+      context "2xx status codes" do
+        let config: %QueueConfig{target: "204"}
+
+        it "treated as success" do
+          expect subject() |> to(be_ok_result())
+        end
+      end
+
+      context "Non-success status codes" do
+         let config: %QueueConfig{target: "404"}
+
+         it "raises with the code" do
+           expect (fn -> subject() end) |> to(raise_exception(RuntimeError, "Got HTTP Status 404"))
+         end
       end
     end
 
@@ -89,7 +113,12 @@ defmodule QBot.Invoker.HttpSpec do
     end
   end
 
-  defp mock_http_call do
-    {:ok, %HTTPoison.Response{status_code: 200, body: %{}}}
+  defp mock_http_call(target) do
+    case target do
+      "econnrefused" -> {:error, :econnrefused}
+               "204" -> {:ok, %HTTPoison.Response{status_code: 204, body: %{}}}
+               "404" -> {:ok, %HTTPoison.Response{status_code: 404, body: %{}}}
+                   _ -> {:ok, %HTTPoison.Response{status_code: 200, body: "Hello world!"}}
+    end
   end
 end
