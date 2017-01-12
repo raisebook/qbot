@@ -8,9 +8,11 @@ defmodule QBot.Invoker.Http do
 
   def invoke!(%Message{} = message, %QueueConfig{} = config) do
     case HTTPoison.post(config.target, post_body(message), http_headers(message)) do
-      {:ok, %HTTPoison.Response{status_code: 200}}  -> {:ok, message}
-      {:ok, error = %HTTPoison.Response{}}          -> {:error, error}
-      {:error, %HTTPoison.Error{reason: reason}}    -> {:error, reason}
+      {:ok, %HTTPoison.Response{status_code: code}}
+        when code >= 200 and code < 300 -> {:ok, message}
+      {:ok, %HTTPoison.Response{status_code: code}} -> raise "Got HTTP Status #{code}"
+      {:error, %HTTPoison.Error{reason: reason}}    -> raise reason
+      {:error, error}                               -> raise inspect(error)
       _ -> raise "Unknown HTTP error"
     end
   end
@@ -20,6 +22,7 @@ defmodule QBot.Invoker.Http do
       case key |> String.downcase do
         "correlationuuid" -> %{"X-Request-ID"   => value}
               "requestid" -> %{"X-Request-ID"   => value}
+           "x-request-id" -> %{"X-Request-ID"   => value}
           "authorization" -> %{"Authorization"  => value}
                         _ -> %{}
       end
