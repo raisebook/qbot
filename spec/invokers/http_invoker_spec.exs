@@ -95,6 +95,20 @@ defmodule QBot.Invoker.HttpSpec do
         end
       end
 
+      context "encrypted metadata value" do
+        let message: %Message{body: %{
+            "metadata" => %{ "Authorization" => "Bearer decrypt(3NCRYP7ED==)" },
+            "payload" => payload()
+          }
+        }
+
+        it "decrypts the metadata" do
+          result = {:ok, %{"Plaintext" => ("raisebook-decrypt3d" |> Base.encode64)}}
+          allow ExAws |> to(accept :request, fn _ -> result end)
+          expect subject() |> to(have_any &match?({"Authorization", "Bearer raisebook-decrypt3d"}, &1))
+        end
+      end
+
       context "with headers in config" do
         let config: %QueueConfig{target: "https://test.endpoint/", headers: %{ "Authorization" => "Bearer raisebook" }}
 
@@ -106,7 +120,7 @@ defmodule QBot.Invoker.HttpSpec do
           expect subject() |> to(have_any &match?({"Authorization", "Bearer raisebook"}, &1))
         end
 
-        context "with encrypted headers in config" do
+        context "with encrypted headers in config, if they are wrapped with decrypt(...)" do
           let config: %QueueConfig{target: "https://test.endpoint/", headers: %{ "Authorization" => "Bearer decrypt(raisebook)" }}
 
           it "decrypts encrypted strings" do
@@ -114,6 +128,15 @@ defmodule QBot.Invoker.HttpSpec do
             allow ExAws |> to(accept :request, fn _ -> result end)
             expect subject() |> to(have_any &match?({"Authorization", "Bearer raisebook-decrypted"}, &1))
           end
+        end
+      end
+
+      context "with header set in metadata and config" do
+        let config: %QueueConfig{target: "https://test.endpoint/", headers: %{ "Authorization" => "Overridden" }}
+
+        it "the metadata value takes priority" do
+          expect subject() |> to(have_any &match?({"Authorization", "Bearer supers3cret"}, &1))
+          expect subject() |> to_not(have_any &match?({"Authorization", "Overridden"}, &1))
         end
       end
     end
