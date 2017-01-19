@@ -37,7 +37,7 @@ defmodule QBot.Configerator do
   end
 
   defp fetch_resource(queue) do
-    :timer.sleep(100)
+    :timer.sleep(500)
 
     {:ok, %{body: %{resource: resource}}} = cf_stack
     |> ExAws.Cloudformation.describe_stack_resource(queue)
