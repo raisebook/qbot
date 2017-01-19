@@ -1,19 +1,23 @@
 defmodule QBot.Configerator do
   @moduledoc false
 
+  require Logger
+
   def discover! do
     get_all_sqs_queues
     |> get_queue_metadata
   end
 
   defp get_all_sqs_queues do
-    {:ok, %{body: %{resources: resources}}} = cf_stack
-    |> ExAws.Cloudformation.list_stack_resources
-    |> ExAws.request
-
-    resources
-    |> Enum.filter_map(&(live_sqs_queue(&1)),
-                       &(Map.get(&1, :logical_resource_id)))
+    with {:ok, %{body: %{resources: resources}}} <- cf_stack
+              |> ExAws.Cloudformation.list_stack_resources
+              |> ExAws.request,
+         queues <- resources |> Enum.filter_map(&(live_sqs_queue(&1)),
+                                 &(Map.get(&1, :logical_resource_id)))
+    do
+      Logger.info "Found SQS Queues: #{queues |> Enum.join(", ")}"
+      queues
+    end
   end
 
   defp get_queue_metadata(queues) do
