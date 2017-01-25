@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Usage: qbot reqeue
+# Summary: Requeue messages that have fallen in to the dead letter queue
+
+docker run --rm -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY raisebook/sqs-dead-letter-requeue $@

@@ -60,7 +60,13 @@ Either send a message to the SQS queue directly (or pass it along from an SNS To
 * The payload itself should be in JSON format
 * For Lambda invocations, the message will be passed through, as-is.
 
+## Requeue items in the Dead Letter Queue
 
+Run ```qbot requeue <name of the queue>```
+
+Let it run to completion - it looks like it hangs, but there is a 20 second timeout to make sure it cleares the queue out completely.
+
+Looking for the code for this? Checkout https://github.com/raisebook/sqs-dead-letter-handling
 
 ## Raisebot
 
