@@ -62,6 +62,8 @@ Either send a message to the SQS queue directly (or pass it along from an SNS To
 
 ## Requeue items in the Dead Letter Queue
 
+First, ensure you have exported your AWS credentials into your environment
+
 Run ```qbot requeue <name of the queue>```
 
 Let it run to completion - it looks like it hangs, but there is a 20 second timeout to make sure it cleares the queue out completely.
