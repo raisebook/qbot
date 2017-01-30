@@ -30,14 +30,15 @@ defmodule QBot.Invoker.Http do
       case key |> String.downcase do
         "correlationuuid" -> %{"X-Request-ID"   => value}
               "requestid" -> %{"X-Request-ID"   => value}
+             "request_id" -> %{"X-Request-ID"   => value}
            "x-request-id" -> %{"X-Request-ID"   => value}
           "authorization" -> %{"Authorization"  => value}
+               "callback" -> %{"X-Callback"     => value}
                         _ -> %{}
       end
     end)
     |> Enum.into(%{})
   end
-
 
   def post_body(%Message{body: body}) do
     {:ok, result} = case body do

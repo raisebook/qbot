@@ -47,7 +47,8 @@ Either send a message to the SQS queue directly (or pass it along from an SNS To
 {
   "metadata": {
     "RequestID": "12345-12345-12345-12345-12345",
-    "Authorization": "Bearer myt0ken"
+    "Authorization": "Bearer myt0ken",
+    "Callback": "https://raisebook.dev/graphql"
   },
   "payload": {
     "my": "json payload"
@@ -59,6 +60,20 @@ Either send a message to the SQS queue directly (or pass it along from an SNS To
 * If there is no metadata, wrapping the payload in a "payload" key is optional
 * The payload itself should be in JSON format
 * For Lambda invocations, the message will be passed through, as-is.
+
+### Valid Metadata keys to HTTP Headers
+
+| Metadata Key    | HTTP Header    |
+|-----------------|----------------|
+| CorrelationUUID | X-Request-ID   | 
+| RequestID       | X-Request-ID   |
+| Request_ID      | X-Request-ID   |
+| X-Request-ID    | X-Request-ID   |
+| Authorization   | Authorization  |
+| Callback        | X-Callback     |
+
+
+For _HTTP_ all other metadata keys will be **dropped**.
 
 ## Requeue items in the Dead Letter Queue
 
