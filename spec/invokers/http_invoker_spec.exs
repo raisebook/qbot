@@ -13,7 +13,8 @@ defmodule QBot.Invoker.HttpSpec do
         %{ "metadata" => %{
            "CorrelationUUID" => "12345-12345-12345-12345",
            "NotForTheHeader" => "DiscardMe",
-           "Authorization" => "Bearer supers3cret"
+           "Authorization" => "Bearer supers3cret",
+           "Callback" => "https://raisebook.dev/graphql"
          },
          "payload" => payload()
       }
@@ -85,6 +86,10 @@ defmodule QBot.Invoker.HttpSpec do
 
       it "passes through auth tokens" do
         expect subject() |> to(have_any &match?({"Authorization", "Bearer supers3cret"}, &1))
+      end
+
+      it "passes through callback urls" do
+        expect subject() |> to(have_any &match?({"X-Callback", "https://raisebook.dev/graphql"}, &1))
       end
 
       context "with no metadata" do
