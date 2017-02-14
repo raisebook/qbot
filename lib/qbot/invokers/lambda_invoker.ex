@@ -8,6 +8,7 @@ defmodule QBot.Invoker.Lambda do
 
   require Logger
 
+  @spec invoke!(%SqsService.Message{}, %QBot.QueueConfig{}) :: {:ok, %SqsService.Message{}}
   def invoke!(%Message{body: body} = message, %QueueConfig{target: target}) do
     {:ok, payload} = body |> Poison.encode
 
