@@ -40,7 +40,6 @@ defmodule QBot do
   end
   defp wait_for_config(config), do: config
 
-  @doc false
   defmodule TaskSupervisor do
     @moduledoc """
     OTP Supervisor for the Poller workers

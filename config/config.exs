@@ -10,4 +10,9 @@ config :rollbax,
   environment: "development",
   enabled: :log
 
+config :ex_aws,
+  sqs:            %{port: 443},
+  cloudformation: %{port: 443},
+  lambda:         %{port: 443}
+
 import_config "#{Mix.env}.exs"
