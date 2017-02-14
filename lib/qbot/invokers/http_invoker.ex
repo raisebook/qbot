@@ -6,6 +6,7 @@ defmodule QBot.Invoker.Http do
   alias QBot.QueueConfig
   alias SqsService.Message
 
+  @spec invoke!(%SqsService.Message{}, %QBot.QueueConfig{}) :: {:ok, %SqsService.Message{}}
   def invoke!(%Message{} = message, %QueueConfig{} = config) do
     case HTTPoison.post(config.target, post_body(message), http_headers(message, config)) do
       {:ok, %HTTPoison.Response{status_code: code}}
@@ -17,12 +18,14 @@ defmodule QBot.Invoker.Http do
     end
   end
 
+  @spec http_headers(%SqsService.Message{}, %QBot.QueueConfig{}) :: map
   def http_headers(%Message{body: %{"metadata" => metadata}}, %QueueConfig{headers: headers}) do
     headers |> Map.merge(metadata)
             |> add_headers
   end
   def http_headers(%Message{}, %QueueConfig{headers: headers}), do: add_headers(headers)
 
+  @spec add_headers(headers :: map) :: map
   def add_headers(headers) do
     headers
     |> Enum.flat_map(fn {k, v} -> %{k => decrypt(v)} end)
@@ -40,6 +43,7 @@ defmodule QBot.Invoker.Http do
     |> Enum.into(%{})
   end
 
+  @spec post_body(%SqsService.Message{}) :: String.t
   def post_body(%Message{body: body}) do
     {:ok, result} = case body do
       %{"payload" => payload} -> payload |> Poison.encode

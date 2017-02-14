@@ -7,6 +7,7 @@ defmodule QBot.Poller do
 
   require Logger
 
+  @spec poll(config :: %QBot.QueueConfig{}, worker_id :: pos_integer) :: none
   def poll(config, worker_id) do
     if System.get_env("NO_POLL") == "true" do
       Logger.info("Application started with NO_POLL")
@@ -16,6 +17,7 @@ defmodule QBot.Poller do
     end
   end
 
+  @spec process_message(%QBot.QueueConfig{}) :: :ok
   def process_message(%QueueConfig{} = config) do
     config |> QBot.QueueConfig.sqs_queue_name
            |> SqsService.get_message
