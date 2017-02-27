@@ -1,6 +1,6 @@
 FROM debian:jessie
 
-RUN apt-get update -y
+RUN apt-get update && apt-get upgrade
 RUN apt-get install -y libssl1.0.0 libsctp1
 
 ENV LANG=C.UTF-8

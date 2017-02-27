@@ -10,7 +10,7 @@ function celebrate {
  if [[ $? == 0 ]]; then
    inline_image 'https://i.giphy.com/hTh9bSbUPWMWk.gif' 'PARTYPARROT'
  else
-   inline_image 'https://i.giphy.com/3oz8xGezAq6QyntdTO.gif' 'FAIL'
+   inline_image 'https://media.giphy.com/media/3oGRFHSFa8CjBnAmOs/giphy.gif' 'FAIL'
  fi
 }
 trap celebrate EXIT
