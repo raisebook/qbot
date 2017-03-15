@@ -9,7 +9,7 @@ defmodule QBot.Configerator do
   end
 
   defp get_all_sqs_queues do
-    with {:ok, %{body: %{resources: resources}}} <- cf_stack
+    with {:ok, %{body: %{resources: resources}}} <- Qbot.AppConfig.aws_stack
               |> ExAws.Cloudformation.list_stack_resources
               |> ExAws.request,
          queues <- resources |> Enum.filter_map(&(live_sqs_queue(&1)),
@@ -39,14 +39,11 @@ defmodule QBot.Configerator do
   defp fetch_resource(queue) do
     :timer.sleep(500)
 
-    {:ok, %{body: %{resource: resource}}} = cf_stack
-    |> ExAws.Cloudformation.describe_stack_resource(queue)
-    |> ExAws.request
-    resource
-  end
-
-  defp cf_stack do
-   Application.get_env(:qbot, :aws_stack)
+    with stack <- Qbot.AppConfig.aws_stack,
+         result <- stack |> ExAws.Cloudformation.describe_stack_resource(queue)
+                         |> ExAws.request,
+         {:ok, %{body: %{resource: resource}}} <- result,
+         do: resource
   end
 
   defp live_sqs_queue(resource) do
