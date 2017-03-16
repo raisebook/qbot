@@ -103,3 +103,11 @@ This tool is a fork of [Sub](https://github.com/basecamp/sub)
 
 
 ![ROBOT](http://i.imgur.com/hBURPq9.jpg "Claptrap")
+
+## Contributing
+
+Please read the [Licence](LICENCE.md) and [Code of Conduct](COC.md) before contributing.
+
+Patches can be submitted by following the usual GitHub "fork -> feature branch -> pull request" dance.
+
+Thanks.
