@@ -1,0 +1,22 @@
+---
+family: <%= family('qbot') %>
+taskRoleArn: <%= ecs_task_role('qbot') %>
+containerDefinitions:
+- name: qbot
+  image: raisebook/qbot:<%= docker_image_tag %>
+  essential: true
+  cpu: 64
+  memory: 96
+  syslogDestination: <%= "tcp+tls://#{kms_decrypt('AQECAHgBe/Bo6N6P3DZu2j8rSbOworqekgIES5evTHicjBhp6AAAAHsweQYJKoZIhvcNAQcGoGwwagIBADBlBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDNHGzznV4UrDN1HF1wIBEIA42hkDPhlzZwL8FIHT2parumqRRptVioeEEky7cU0YaOR59Lxfg6vAlMaSJOAwLNR/tsGCIoqb8yc=')}" %>
+  syslogAppName: QBot
+  environment:
+    - name: AWS_REGION
+      value: ap-southeast-2
+    - name: AWS_STACK
+      value: production
+    - name: WORKERS_PER_QUEUE
+      value: "1"
+    - name: CONFIG_POLL_DELAY_SEC
+      value: "120"
+    - name: ROLLBAR_ACCESS_TOKEN
+      value: <%= kms_decrypt('AQECAHgBe/Bo6N6P3DZu2j8rSbOworqekgIES5evTHicjBhp6AAAAH4wfAYJKoZIhvcNAQcGoG8wbQIBADBoBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDP0b/i3C8s5MhE3/nwIBEIA7jmL2pcygkMQ1sNmvBZHqnMUFqfBLqayLjOY5fNWE2YnxyZcGCaoiD8vPOBJWdaMeDTRJVdD3OETqyOg=') %>

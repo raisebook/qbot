@@ -22,7 +22,7 @@ services:
       - ./build-prod.env
 
   deployment:
-    image: raisebook/deploy:daecb6009f57a6718804da86e020e6bb3c62808f
+    image: raisebook/deploy:30b9b0fe0724287dc0b4709c5c448180fa40e52e
     volumes:
       - .:/app
     tmpfs:
