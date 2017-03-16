@@ -1,7 +1,6 @@
 use Mix.Config
 
-config :logger, backends: [LoggerPapertrailBackend.Logger,
-                           Rollbax.Logger,
+config :logger, backends: [Rollbax.Logger,
                            :console],
                            utc_log: true
 

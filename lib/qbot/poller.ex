@@ -55,9 +55,7 @@ defmodule QBot.Poller do
   end
 
   defp reconfigure_logger_with_uuid({:ok, %Message{body: %{"correlation_uuid" => uuid}}} = passthrough) do
-    Logger.configure_backend(LoggerPapertrailBackend.Logger, metadata: [:uuid])
     Logger.configure_backend(:console, metadata: [:uuid])
-
     Logger.metadata([uuid: uuid])
     passthrough
   end

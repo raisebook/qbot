@@ -13,7 +13,7 @@ defmodule QBot.Mixfile do
 
   def application do
     [applications: [
-      :httpoison, :logger, :logger_papertrail_backend, :rollbax, :apex,
+      :httpoison, :logger, :rollbax, :apex,
       :ex_aws, :ex_sqs_service, :sweet_xml, :poison, :config],
      mod: {QBot, []}]
   end
@@ -27,7 +27,6 @@ defmodule QBot.Mixfile do
       {:httpoison, "~> 0.11.0"},
       {:distillery, "1.1.2"},
       {:config, github: "renderedtext/ex-config"},
-      {:logger_papertrail_backend, "0.1.1"},
       {:rollbax, "0.8.1"},
       {:dogma, "0.1.14", only: [:dev, :test, :lint]},
       {:credo, "0.6.1", only: [:dev, :test, :lint]},

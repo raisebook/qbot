@@ -7,6 +7,8 @@ containerDefinitions:
   essential: true
   cpu: 64
   memory: 96
+  syslogDestination: <%= "tcp+tls://#{kms_decrypt('AQECAHhy31OYJTxr53M37frS6czkFd/VksSumAi4+mwVUJGmMQAAAHsweQYJKoZIhvcNAQcGoGwwagIBADBlBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDMUEn2w9TPYpeiCJcwIBEIA4v3TH6cNyUUXOU5jcAcAe9SS89Gyf4MZsE3FvbZ0lq+ClhVQ7psy/Y3fVbtGahwjKxVF65Pl+4cM=')}" %>
+  syslogAppName: QBot-Compliance
   environment:
     - name: AWS_STACK
       value: development
@@ -14,9 +16,5 @@ containerDefinitions:
       value: 1
     - name: CONFIG_POLL_DELAY_SEC
       value: 120
-    - name: PAPERTRAIL_ENDPOINT
-      value: <%= kms_decrypt('AQECAHhy31OYJTxr53M37frS6czkFd/VksSumAi4+mwVUJGmMQAAAHsweQYJKoZIhvcNAQcGoGwwagIBADBlBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDMUEn2w9TPYpeiCJcwIBEIA4v3TH6cNyUUXOU5jcAcAe9SS89Gyf4MZsE3FvbZ0lq+ClhVQ7psy/Y3fVbtGahwjKxVF65Pl+4cM=') %>
-    - name: PAPERTRAIL_ACCESS_TOKEN
-      value: <%= kms_decrypt('AQECAHhy31OYJTxr53M37frS6czkFd/VksSumAi4+mwVUJGmMQAAAHIwcAYJKoZIhvcNAQcGoGMwYQIBADBcBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDP17acUm6bA0jmHkoQIBEIAvciU6lMbEvezdQ6F4dTI7nzVfz5lm0QBeflKueH3DnpJ+iPp8Cc+E8IMU6k82KbM=') %>
     - name: ROLLBAR_ACCESS_TOKEN
       value: <%= kms_decrypt('AQECAHhy31OYJTxr53M37frS6czkFd/VksSumAi4+mwVUJGmMQAAAH4wfAYJKoZIhvcNAQcGoG8wbQIBADBoBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDHy03QtTkLyvVLjeWwIBEIA7FNNFV/vUszWLqGWKD2G+1kU3jfEQ66tS8zJGzeYDGoiRhKajF4LHx5DXZFEo4KTXf8aasAFQSceRAzM=') %>
