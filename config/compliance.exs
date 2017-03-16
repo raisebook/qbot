@@ -7,6 +7,9 @@ config :logger, backends: [Rollbax.Logger,
 config :logger, Rollbax.Logger,
   level: :error
 
+config :logger, :console,
+  level: :info
+
 config :rollbax,
   access_token: {:system, "ROLLBAR_ACCESS_TOKEN"},
   environment: "compliance",
