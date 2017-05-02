@@ -4,7 +4,7 @@ defmodule QBot.Configerator do
   require Logger
 
   def discover! do
-    Qbot.AppConfig.aws_stacks |> IO.inspect
+    QBot.AppConfig.aws_stacks
     |> Enum.map(&(&1 |> get_all_sqs_queues |> get_queue_metadata))
     |> List.flatten
   end

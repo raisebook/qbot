@@ -6,15 +6,22 @@ defmodule QBot.ConfigeratorSpec do
 
   describe "discover!/0" do
 
-    subject do: QBot.Configerator.discover!
-
     before do
       allow ExAws |> to(accept :request, fn req -> mock_decider(req) end)
+      allow QBot.AppConfig |> to(accept :aws_stacks, fn -> ~w(stack1 stack2) end)
     end
+
+    subject do: QBot.Configerator.discover!
 
     it "returns a map of config data from Cloudformation metadata" do
       expected_config = [
         %QueueConfig{
+           name:    "WithMeta",
+           target:  "arn:aws:lambda:ap-southeast-2:038451313208:function:target-lambda",
+           sqs_url: "https://sqs.ap-southeast-2.amazonaws.com/038451313208/test-queue"
+          },
+          # Result per stack
+          %QueueConfig{
            name:    "WithMeta",
            target:  "arn:aws:lambda:ap-southeast-2:038451313208:function:target-lambda",
            sqs_url: "https://sqs.ap-southeast-2.amazonaws.com/038451313208/test-queue"
@@ -25,7 +32,7 @@ defmodule QBot.ConfigeratorSpec do
     end
   end
 
-  defp mock_decider(%Query{action: :list_stack_resources}), do: mock_list_stack_resources
+  defp mock_decider(%Query{action: :list_stack_resources}), do: mock_list_stack_resources()
   defp mock_decider(%Query{action: :describe_stack_resource, params: %{"LogicalResourceId" => res}}) do
     mock_describe_stack_resource(res)
   end
@@ -59,7 +66,7 @@ defmodule QBot.ConfigeratorSpec do
   end
 
   defp mock_describe_stack_resource(resource_name) do
-    {:ok, %{body: %{resources: resources}}} = mock_list_stack_resources
+    {:ok, %{body: %{resources: resources}}} = mock_list_stack_resources()
     resource = resources |> Enum.find(&(match? %{logical_resource_id: ^resource_name}, &1))
 
     metadata = case resource_name do

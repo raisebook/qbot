@@ -1,4 +1,4 @@
-defmodule Qbot.AppConfig do
+defmodule QBot.AppConfig do
   @moduledoc """
     Wrapper around application-specific config variables, with defaults
   """

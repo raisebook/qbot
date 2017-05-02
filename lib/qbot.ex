@@ -9,7 +9,7 @@ defmodule QBot do
   @lint {Credo.Check.Readability.Specs, false}
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
-    workers_per_queue = Qbot.AppConfig.workers_per_queue
+    workers_per_queue = QBot.AppConfig.workers_per_queue
     Logger.info "QBot has started"
 
     try do
@@ -34,7 +34,7 @@ defmodule QBot do
     Apex.ap auto_config
 
     if auto_config == [] do
-      :timer.sleep(Qbot.AppConfig.config_poll_delay_sec * 1000)
+      :timer.sleep(QBot.AppConfig.config_poll_delay_sec * 1000)
     end
     wait_for_config(auto_config)
   end
