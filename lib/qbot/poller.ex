@@ -11,7 +11,7 @@ defmodule QBot.Poller do
   def poll(config, worker_id) do
     if System.get_env("NO_POLL") == "true" do
       Logger.info("Application started with NO_POLL")
-      wait_forever
+      wait_forever()
     else
       polling_loop(config, worker_id)
     end
@@ -38,7 +38,7 @@ defmodule QBot.Poller do
 
   defp polling_loop(config, worker_id) do
     try do
-      Logger.debug "Doing a poll on worker id: #{worker_id}"
+      Logger.debug fn -> "Doing a poll on worker id: #{worker_id}" end
       config |> process_message
     rescue
       exception ->
@@ -51,7 +51,7 @@ defmodule QBot.Poller do
 
   defp wait_forever do
     :timer.sleep(10_000)
-    wait_forever
+    wait_forever()
   end
 
   defp reconfigure_logger_with_uuid({:ok, %Message{body: %{"correlation_uuid" => uuid}}} = passthrough) do

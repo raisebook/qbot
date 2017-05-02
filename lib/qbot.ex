@@ -6,10 +6,9 @@ defmodule QBot do
   use Application
   require Logger
 
-  @lint {Credo.Check.Readability.Specs, false}
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
-    workers_per_queue = Qbot.AppConfig.workers_per_queue
+    workers_per_queue = QBot.AppConfig.workers_per_queue
     Logger.info "QBot has started"
 
     try do
@@ -31,10 +30,10 @@ defmodule QBot do
   defp wait_for_config([]) do
     auto_config = QBot.Configerator.discover!
     Logger.info "Got Auto-Discovery config:"
-    Logger.info inspect(auto_config)
+    Apex.ap auto_config
 
     if auto_config == [] do
-      :timer.sleep(Qbot.AppConfig.config_poll_delay_sec * 1000)
+      :timer.sleep(QBot.AppConfig.config_poll_delay_sec * 1000)
     end
     wait_for_config(auto_config)
   end
@@ -48,14 +47,12 @@ defmodule QBot do
     use Supervisor
     import Supervisor.Spec, warn: false
 
-    @lint {Credo.Check.Readability.Specs, false}
     def start_link(arg) do
       Supervisor.start_link(__MODULE__, arg, name: __MODULE__)
     end
 
-    @lint {Credo.Check.Readability.Specs, false}
     def init({auto_config, count}) do
-      Logger.info "QBot starting workers, #{count} per queue}"
+      Logger.info fn -> "QBot starting workers, #{count} per queue}" end
 
       tasks = auto_config |> Enum.flat_map(fn config ->
         1..count |> Enum.map(fn c ->
