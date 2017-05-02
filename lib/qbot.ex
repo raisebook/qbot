@@ -6,7 +6,6 @@ defmodule QBot do
   use Application
   require Logger
 
-  @lint {Credo.Check.Readability.Specs, false}
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
     workers_per_queue = QBot.AppConfig.workers_per_queue
@@ -48,14 +47,12 @@ defmodule QBot do
     use Supervisor
     import Supervisor.Spec, warn: false
 
-    @lint {Credo.Check.Readability.Specs, false}
     def start_link(arg) do
       Supervisor.start_link(__MODULE__, arg, name: __MODULE__)
     end
 
-    @lint {Credo.Check.Readability.Specs, false}
     def init({auto_config, count}) do
-      Logger.info "QBot starting workers, #{count} per queue}"
+      Logger.info fn -> "QBot starting workers, #{count} per queue}" end
 
       tasks = auto_config |> Enum.flat_map(fn config ->
         1..count |> Enum.map(fn c ->

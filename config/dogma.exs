@@ -16,4 +16,5 @@ config :dogma,
   # Override an existing rule configuration
   override: [
     %Rule.LineLength{ max_length: 140 },
+    %Rule.PipelineStart{enabled: false}
   ]
