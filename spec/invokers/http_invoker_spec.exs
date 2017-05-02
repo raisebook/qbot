@@ -53,8 +53,8 @@ defmodule QBot.Invoker.HttpSpec do
       context "Connection Refused error" do
         let config: %QueueConfig{target: "econnrefused"}
 
-        it "raises" do
-          expect(fn -> subject() end) |> to(raise_exception(RuntimeError, ":econnrefused"))
+        it "returns a {:no_message, _} tuple" do
+          expect(subject()) |> to(eq({:no_message, nil}))
         end
       end
 
@@ -67,11 +67,17 @@ defmodule QBot.Invoker.HttpSpec do
       end
 
       context "Non-success status codes" do
-         let config: %QueueConfig{target: "404"}
+        let config: %QueueConfig{target: "404"}
 
-         it "raises with the code" do
-           expect (fn -> subject() end) |> to(raise_exception(RuntimeError, "Got HTTP Status 404"))
-         end
+        it "returns a {:no_message, _} tuple" do
+           expect(subject()) |> to(eq({:no_message, nil}))
+        end
+
+        xit "logs a warning" do
+          allow Logger  |> to(accept :warn)
+          subject()
+          expect Logger |> to(accepted :warn, :any, count: 1)
+        end
       end
     end
 

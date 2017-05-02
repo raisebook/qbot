@@ -6,14 +6,17 @@ defmodule QBot.Invoker.Http do
   alias QBot.QueueConfig
   alias SqsService.Message
 
+  require Logger
+
   @spec invoke!(%SqsService.Message{}, %QBot.QueueConfig{}) :: {:ok, %SqsService.Message{}}
   def invoke!(%Message{} = message, %QueueConfig{} = config) do
     case HTTPoison.post(config.target, post_body(message), http_headers(message, config)) do
       {:ok, %HTTPoison.Response{status_code: code}}
         when code >= 200 and code < 300 -> {:ok, message}
-      {:ok, %HTTPoison.Response{status_code: code}} -> raise "Got HTTP Status #{code}"
-      {:error, %HTTPoison.Error{reason: reason}}    -> raise reason
-      {:error, error}                               -> raise inspect(error)
+      {:ok, %HTTPoison.Response{status_code: code}} -> remote_failed "Got HTTP Status #{code}"
+      {:error, :nxdomain}                           -> remote_failed("NX Domain for #{config.target}", rollbar: true)
+      {:error, %HTTPoison.Error{reason: reason}}    -> remote_failed reason
+      {:error, error}                               -> remote_failed inspect(error)
       _ -> raise "Unknown HTTP error"
     end
   end
@@ -67,4 +70,15 @@ defmodule QBot.Invoker.Http do
           end)
           |> Enum.join(" ")
   end
+
+  defp remote_failed(error, [rollbar: true]) do
+    Rollbax.report(:error, error, System.stacktrace())
+    remote_failed(error)
+  end
+
+  defp remote_failed(error) do
+    Logger.warn error
+    {:no_message, nil}
+  end
+
 end
