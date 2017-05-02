@@ -7,7 +7,10 @@ defmodule Qbot.AppConfig do
 
   def config_poll_delay_sec, do: fetch_int(:config_poll_delay_sec, 120)
   def workers_per_queue,     do: fetch_int(:workers_per_queue, 1)
-  def aws_stack,             do: fetch(:aws_stack, "development")
+
+  def aws_stacks do
+    :aws_stacks |> fetch("development") |> String.split(",")
+  end
 
   defp fetch(key, default) do
     case Config.get(:qbot, key, default: default) do

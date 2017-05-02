@@ -2,7 +2,7 @@ use Mix.Config
 
 config :qbot,
   workers_per_queue:      {:system, "WORKERS_PER_QUEUE"},
-  aws_stack:              {:system, "AWS_STACK"},
+  aws_stacks:             {:system, "AWS_STACKS"},
   config_poll_delay_sec:  {:system, "CONFIG_POLL_DELAY_SEC"}
 
 config :rollbax,

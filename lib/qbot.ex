@@ -31,7 +31,7 @@ defmodule QBot do
   defp wait_for_config([]) do
     auto_config = QBot.Configerator.discover!
     Logger.info "Got Auto-Discovery config:"
-    Logger.info inspect(auto_config)
+    Apex.ap auto_config
 
     if auto_config == [] do
       :timer.sleep(Qbot.AppConfig.config_poll_delay_sec * 1000)
