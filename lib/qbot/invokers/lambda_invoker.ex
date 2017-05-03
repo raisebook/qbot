@@ -21,9 +21,14 @@ defmodule QBot.Invoker.Lambda do
     case result do
       {:ok, nil} -> {:ok, message}
       {:ok, nil, _} -> {:ok, message}
-      {:ok, %{"errorMessage" => error}} -> raise error
-      _ -> raise "Got an unhandled response format from Lambda"
+      {:ok, %{"errorMessage" => error}} -> remote_failed(error)
+      _ -> remote_failed("Got an unhandled response format from Lambda")
     end
+  end
+
+  defp remote_failed(error) do
+    Logger.warn error
+    {:no_message, nil}
   end
 
 end

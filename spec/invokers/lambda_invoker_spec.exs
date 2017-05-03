@@ -34,8 +34,12 @@ defmodule QBot.Invoker.LambdaSpec do
     context "error from the lambda function" do
       let payload: %{"this" => "will fail"}
 
-      it "raises with the error from the remote" do
-        expect(fn -> subject() end) |> to(raise_exception(RuntimeError, "remote fail"))
+      it "does not raise" do
+        expect(fn -> subject() end) |> to_not(raise_exception(RuntimeError, "remote fail"))
+      end
+
+      it "returns a {:no_message, _} tuple" do
+        expect(subject()) |> to(eq({:no_message, nil}))
       end
     end
   end

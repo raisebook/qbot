@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Usage: qbot mix
+# Summary: Run a 'mix' command
+
+$(dirname "$0")/_compose-run.sh /bin/bash $@

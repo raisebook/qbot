@@ -5,6 +5,8 @@ defmodule QBot.Invoker.HttpSpec do
   alias QBot.QueueConfig
   alias QBot.Invoker.Http
 
+  require Logger
+
   describe "HttpInvoker" do
       # SQS Service delivers the body with string keys
       let payload: %{"some" => "data", "wrapped" => "here"}
@@ -53,8 +55,16 @@ defmodule QBot.Invoker.HttpSpec do
       context "Connection Refused error" do
         let config: %QueueConfig{target: "econnrefused"}
 
-        it "raises" do
-          expect(fn -> subject() end) |> to(raise_exception(RuntimeError, ":econnrefused"))
+        it "returns a {:no_message, _} tuple" do
+          expect(subject()) |> to(eq({:no_message, nil}))
+        end
+      end
+
+      context "No such domain (misconfiguration)" do
+        let config: %QueueConfig{target: "nxdomain"}
+
+        it "returns a {:no_message, _} tuple" do
+          expect(subject()) |> to(eq({:no_message, nil}))
         end
       end
 
@@ -67,11 +77,11 @@ defmodule QBot.Invoker.HttpSpec do
       end
 
       context "Non-success status codes" do
-         let config: %QueueConfig{target: "404"}
+        let config: %QueueConfig{target: "404"}
 
-         it "raises with the code" do
-           expect (fn -> subject() end) |> to(raise_exception(RuntimeError, "Got HTTP Status 404"))
-         end
+        it "returns a {:no_message, _} tuple" do
+           expect(subject()) |> to(eq({:no_message, nil}))
+        end
       end
     end
 
@@ -168,6 +178,7 @@ defmodule QBot.Invoker.HttpSpec do
   defp mock_http_call(target) do
     case target do
       "econnrefused" -> {:error, :econnrefused}
+          "nxdomain" -> {:error, %HTTPoison.Error{reason: :nxdomain}}
                "204" -> {:ok, %HTTPoison.Response{status_code: 204, body: %{}}}
                "404" -> {:ok, %HTTPoison.Response{status_code: 404, body: %{}}}
                    _ -> {:ok, %HTTPoison.Response{status_code: 200, body: "Hello world!"}}
