@@ -41,12 +41,6 @@ defmodule QBot.Invoker.LambdaSpec do
       it "returns a {:no_message, _} tuple" do
         expect(subject()) |> to(eq({:no_message, nil}))
       end
-
-      xit "logs a warning" do
-        allow Logger  |> to(accept :warn)
-        subject()
-        expect Logger |> to(accepted :warn, :any, count: 1)
-      end
     end
   end
 

@@ -11,10 +11,9 @@ defmodule QBot.Invoker.Http do
   @spec invoke!(%SqsService.Message{}, %QBot.QueueConfig{}) :: {:ok, %SqsService.Message{}}
   def invoke!(%Message{} = message, %QueueConfig{} = config) do
     case HTTPoison.post(config.target, post_body(message), http_headers(message, config)) do
-      {:ok, %HTTPoison.Response{status_code: code}}
-        when code >= 200 and code < 300 -> {:ok, message}
-      {:ok, %HTTPoison.Response{status_code: code}} -> remote_failed "Got HTTP Status #{code}"
-      {:error, :nxdomain}                           -> remote_failed("NX Domain for #{config.target}", rollbar: true)
+      {:ok, %HTTPoison.Response{status_code: code}} when code >= 200 and code < 300 -> {:ok, message}
+      {:ok, %HTTPoison.Response{status_code: code}} -> remote_failed "Got HTTP Status #{code} from #{config.target}"
+      {:error, %HTTPoison.Error{reason: :nxdomain}} -> remote_failed("NX Domain for #{config.target}", rollbar: true)
       {:error, %HTTPoison.Error{reason: reason}}    -> remote_failed reason
       {:error, error}                               -> remote_failed inspect(error)
       _ -> raise "Unknown HTTP error"
