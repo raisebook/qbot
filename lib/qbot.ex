@@ -21,9 +21,10 @@ defmodule QBot do
       {:ok, _pid} = Supervisor.start_link(children, opts)
     rescue
       exception ->
-        Logger.error "#{inspect(exception)} #{inspect(System.stacktrace())}"
+        trace = System.stacktrace
+        Logger.error "#{inspect(exception)} #{inspect(trace)}"
         Rollbax.report(:error, exception, System.stacktrace())
-        reraise exception
+        reraise exception, trace
     end
   end
 

@@ -42,9 +42,10 @@ defmodule QBot.Poller do
       config |> process_message
     rescue
       exception ->
-        Rollbax.report(:error, exception, System.stacktrace())
+        trace = System.stacktrace
+        Rollbax.report(:error, exception, trace)
         Logger.error "#{inspect(exception)} - #{inspect(System.stacktrace())}"
-        reraise exception
+        reraise exception, trace
     end
     polling_loop(config, worker_id)
   end
