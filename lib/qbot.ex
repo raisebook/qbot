@@ -23,7 +23,7 @@ defmodule QBot do
       exception ->
         Logger.error "#{inspect(exception)} #{inspect(System.stacktrace())}"
         Rollbax.report(:error, exception, System.stacktrace())
-        raise exception
+        reraise exception
     end
   end
 
