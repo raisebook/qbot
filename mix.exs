@@ -25,7 +25,7 @@ defmodule QBot.Mixfile do
       {:ex_aws, git: "https://github.com/raisebook/ex_aws", branch: "feature/cloudformation"},
       {:ex_sqs_service, git: "https://github.com/raisebook/ex_sqs_service"},
       {:hackney, "~> 1.8.0", override: true},
-      {:httpoison, "~> 0.11.0"},
+      {:httpoison, "~> 0.12.0"},
       {:poison, "~> 3.1.0", override: true},
       {:rollbax, "~> 0.8.1"},
       {:sweet_xml, "~> 0.6.5"},
