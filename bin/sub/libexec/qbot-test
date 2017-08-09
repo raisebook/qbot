@@ -2,4 +2,5 @@
 # Usage: qbot test
 # Summary: Run the specs inside the container
 
-$(dirname "$0")/_compose-run.sh mix espec $@ --no-start --trace
+#$(dirname "$0")/_compose-run.sh mix espec --no-start --trace
+docker-compose run --rm -e MIX_ENV=test qbot mix run --no-start -e "Mix.Tasks.Espec.run(~w(--trace))"
