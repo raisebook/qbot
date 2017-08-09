@@ -24,9 +24,9 @@ defmodule QBot.Mixfile do
       {:config, github: "renderedtext/ex-config"},
       {:ex_aws, "~> 1.1"},
       {:ex_sqs_service, git: "https://github.com/raisebook/ex_sqs_service"},
-      {:hackney, "~> 1.8.0", override: true},
-      {:httpoison, "~> 0.12.0"},
-      {:poison, "~> 3.1.0", override: true},
+      {:hackney, "~> 1.9.0", override: true},
+      {:httpoison, "~> 0.13.0"},
+      {:poison, "~> 3.1.0"},
       {:rollbax, "~> 0.8.1"},
       {:sweet_xml, "~> 0.6.5"},
 
