@@ -24,16 +24,17 @@ defmodule QBot.Mixfile do
       {:config, github: "renderedtext/ex-config"},
       {:ex_aws, "~> 1.1"},
       {:ex_sqs_service, git: "https://github.com/raisebook/ex_sqs_service"},
-      {:hackney, "~> 1.8.0", override: true},
-      {:httpoison, "~> 0.12.0"},
-      {:poison, "~> 3.1.0", override: true},
+      {:hackney, "~> 1.9.0", override: true},
+      {:httpoison, "~> 0.13.0"},
+      {:poison, "~> 3.1.0"},
       {:rollbax, "~> 0.8.1"},
       {:sweet_xml, "~> 0.6.5"},
 
       {:distillery, "~> 1.4"},
       {:dogma, "~> 0.1.14", only: [:dev, :test, :lint]},
       {:credo, "~> 0.8.1", only: [:dev, :test, :lint]},
-      {:espec, "~> 1.4", only: :test,  app: false},
+      {:espec, "~> 1.4", only: :test,  app: false, env: :test,
+        git: "https://github.com/joffotron/espec", branch: "passthrough-mix-options"},
     ]
   end
 end
