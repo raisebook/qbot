@@ -1,9 +1,8 @@
 ---
-service:
-  desiredCount: 2
-  deploymentConfiguration:
-    maximumPercent: 200,
-    minimumHealthyPercent: 50,
-  placementStrategy:
-    - type: spread
-      field: instanceId
+desiredCount: 2
+deploymentConfiguration:
+  maximumPercent: 200,
+  minimumHealthyPercent: 50,
+placementStrategy:
+  - type: spread
+    field: instanceId
