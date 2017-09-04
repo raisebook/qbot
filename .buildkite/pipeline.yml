@@ -10,6 +10,8 @@ steps:
         options:
          - label: "production"
            value: "default"
+         - label: "staging"
+           value: "staging"
          - label: "compliance"
            value: "compliance"
 

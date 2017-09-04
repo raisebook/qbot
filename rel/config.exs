@@ -19,6 +19,12 @@ environment :compliance do
   set cookie: :"r&)yXF~oKN>efpTFabfi=3SwBAn:_XTIBM;K8I2x!)!EifIf<#;ZbZD=+hCz`nI~"
 end
 
+environment :staging do
+  set include_erts: true
+  set include_src: false
+  set cookie: :"L9fB;d1GncmtTh,Yy._K{L~OQ),&qk/!}NFNy~bXZ/S8(`9r6OP+B@m!nyb1k-f"
+end
+
 environment :prod do
   set include_erts: true
   set include_src: false
