@@ -6,7 +6,8 @@ containerDefinitions:
   image: raisebook/qbot:<%= docker_image_tag %>
   essential: true
   cpu: 64
-  memory: 128
+  memoryReservation: 128
+  memory: 192
   syslogDestination: <%= "tcp+tls://#{kms_decrypt('AQECAHgBe/Bo6N6P3DZu2j8rSbOworqekgIES5evTHicjBhp6AAAAHsweQYJKoZIhvcNAQcGoGwwagIBADBlBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDNHGzznV4UrDN1HF1wIBEIA42hkDPhlzZwL8FIHT2parumqRRptVioeEEky7cU0YaOR59Lxfg6vAlMaSJOAwLNR/tsGCIoqb8yc=')}" %>
   syslogAppName: QBot-Compliance
   environment:
