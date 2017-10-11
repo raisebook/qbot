@@ -12,6 +12,13 @@ defmodule QBot.AppConfig do
     :aws_stacks |> fetch("development") |> String.split(",")
   end
 
+  def only_queues do
+    case :only_queues |> fetch("") do
+      qs when qs == "" -> nil
+      qs -> qs |> String.split(",")
+    end
+  end
+
   defp fetch(key, default) do
     case Config.get(:qbot, key, default: default) do
       {:ok, value} -> value

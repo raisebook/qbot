@@ -12,8 +12,9 @@ defmodule QBot.Configerator do
   defp get_all_sqs_queues(stack) do
     with {:ok, %{body: %{resources: resources}}} <- stack |> ExAws.Cloudformation.list_stack_resources
                                                           |> ExAws.request,
-         queues <- resources |> Enum.filter_map(&(live_sqs_queue(&1)),
-                                 &(Map.get(&1, :logical_resource_id)))
+         queues <- resources |> Enum.filter(&(live_sqs_queue(&1)))
+                             |> Enum.map(&(Map.get(&1, :logical_resource_id)))
+                             |> filter_selected_queues()
     do
       Logger.info fn -> "Found #{stack} SQS Queues: #{queues |> Enum.join(", ")}" end
       {stack, queues}
@@ -47,5 +48,12 @@ defmodule QBot.Configerator do
   defp live_sqs_queue(resource) do
     resource[:resource_type] == "AWS::SQS::Queue" &&
       (resource[:resource_status] == :create_complete || resource[:resource_status] == :update_complete)
+  end
+
+  defp filter_selected_queues(queues) do
+    case QBot.AppConfig.only_queues do
+      nil -> queues
+      filter -> queues |> Enum.filter(fn q -> filter |> Enum.member?(q) end)
+    end
   end
 end
