@@ -9,7 +9,7 @@ steps:
         required: true
         options:
          - label: "production"
-           value: "default"
+           value: "production"
          - label: "staging"
            value: "staging"
          - label: "compliance"
