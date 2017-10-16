@@ -9,6 +9,10 @@ case ${ECS_CLUSTER} in
     DOCKER_TAG_PREFIX=production
     export MIX_ENV=prod
     ;;
+  production)
+    DOCKER_TAG_PREFIX=production
+    export MIX_ENV=prod
+    ;;
   *)
     DOCKER_TAG_PREFIX=${ECS_CLUSTER}
     export MIX_ENV=${ECS_CLUSTER}
