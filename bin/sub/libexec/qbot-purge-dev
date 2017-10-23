@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-# Usage: qbot purge-dev
-# Summary: Purge messages sitting in the development or compliance SQS queues
-
-docker run --rm -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY raisebook/sqs-purge-dev-queues:latest $@

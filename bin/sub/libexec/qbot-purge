@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Provide qbot completions
+# Usage: qbot purge staging|compliance|development
+# Summary: Purge messages sitting in the development or compliance SQS queues
+
+set -eo pipefail
+
+case "$1" in
+  --complete)
+    echo staging
+    echo compliance
+    echo development
+  ;;
+  *)
+    docker run --rm -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY raisebook/sqs-purge-dev-queues:latest $@
+  ;;
+esac
