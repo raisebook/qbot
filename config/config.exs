@@ -17,4 +17,13 @@ config :ex_aws,
   lambda:         %{port: 443},
   region:         {:system, "AWS_REGION"}
 
+config :ex_aws, :httpoison_opts,
+       recv_timeout: 30_000,
+       hackney: [recv_timeout: 20_000]
+
+config :ex_aws, :retries,
+       max_attempts: 3,
+       base_backoff_in_ms: 10,
+       max_backoff_in_ms: 5_000
+
 import_config "#{Mix.env}.exs"
