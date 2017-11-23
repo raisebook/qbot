@@ -9,7 +9,7 @@ defmodule QBot.AppConfig do
   def workers_per_queue,     do: fetch_int(:workers_per_queue, 1)
 
   def aws_stacks do
-    :aws_stacks |> fetch("development") |> String.split(",")
+    :aws_stacks |> fetch("development-queues") |> String.split(",")
   end
 
   def only_queues do

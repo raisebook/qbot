@@ -27,12 +27,12 @@ defmodule QBot.Invoker.HttpSpec do
 
       subject do: Http.invoke!(message(), config())
 
-      before do: allow HTTPoison |> to(accept :post, fn(target,_,_) -> mock_http_call(target) end)
+      before do: allow HTTPoison |> to(accept :post, fn(target,_,_,_) -> mock_http_call(target) end)
 
       it "does an HTTP POST to the target" do
         subject()
         expect HTTPoison |> to(accepted :post, :any, count: 1)
-        [{_,{HTTPoison, :post, [target, _, _]},_}] = :meck.history(HTTPoison)
+        [{_,{HTTPoison, :post, [target, _, _, _]},_}] = :meck.history(HTTPoison)
         expect target |> to(eq "https://test.endpoint/")
       end
 
@@ -40,7 +40,7 @@ defmodule QBot.Invoker.HttpSpec do
         subject()
         expect HTTPoison |> to(accepted :post, :any, count: 1)
 
-        [{_,{HTTPoison, :post, [_, body, _]},_}] = :meck.history(HTTPoison)
+        [{_,{HTTPoison, :post, [_, body, _, _]},_}] = :meck.history(HTTPoison)
         expect body |> to(eq Http.post_body(message()))
       end
 
@@ -48,7 +48,7 @@ defmodule QBot.Invoker.HttpSpec do
         subject()
         expect HTTPoison |> to(accepted :post, :any, count: 1)
 
-        [{_,{HTTPoison, :post, [_, _, headers]},_}] = :meck.history(HTTPoison)
+        [{_,{HTTPoison, :post, [_, _, headers, _]},_}] = :meck.history(HTTPoison)
         expect headers |> to(eq Http.http_headers(message(),config()))
       end
 
