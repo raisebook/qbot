@@ -4,7 +4,7 @@ defmodule QBot.Mixfile do
   def project do
     [app: :qbot,
      version: "0.1.0",
-     elixir: "~> 1.3",
+     elixir: "~> 1.5",
      preferred_cli_env: [espec: :test],
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
@@ -14,7 +14,7 @@ defmodule QBot.Mixfile do
   def application do
     [applications: [
       :httpoison, :logger, :rollbax, :apex, :flex_logger,
-      :ex_aws, :ex_sqs_service, :ex_aws_sqs, :ex_aws_lambda, :ex_aws_cloudformation,
+      :ex_aws, :ex_sqs_service, :ex_aws_sqs, :ex_aws_lambda, :ex_aws_cloudformation, :ex_aws_kms,
       :sweet_xml, :poison, :config],
      mod: {QBot, []}]
   end
@@ -26,6 +26,7 @@ defmodule QBot.Mixfile do
       {:ex_aws, "~> 2.0.1"},
       {:ex_aws_sqs, "~> 2.0"},
       {:ex_aws_lambda, "~> 2.0"},
+      {:ex_aws_kms, "~> 2.0"},
       {:ex_aws_cloudformation, "~> 2.0"},
       {:ex_sqs_service, git: "https://github.com/raisebook/ex_sqs_service", tag: "v0.2.1"},
       {:flex_logger, "~> 0.2.1"},
