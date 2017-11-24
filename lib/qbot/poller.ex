@@ -19,11 +19,18 @@ defmodule QBot.Poller do
 
   @spec process_message(%QBot.QueueConfig{}) :: :ok
   def process_message(%QueueConfig{} = config) do
-    config |> QBot.QueueConfig.sqs_queue_name
-           |> SqsService.get_message
-           |> reconfigure_logger_with_uuid
-           |> invoke(config)
-           |> SqsService.mark_done
+    with queue_name <- config         |> QBot.QueueConfig.sqs_queue_name,
+     {:ok, message} <- queue_name     |> SqsService.get_message,
+                  _ <- message        |> reconfigure_logger_with_uuid(),
+             result <- {:ok, message} |> invoke(config)
+    do
+      result |> SqsService.mark_done
+    else
+      {:no_message, _} -> :ok
+      {:error, :closed} -> :ok
+      {:error, :timeout} -> :ok
+      error -> error
+    end
 
     Logger.metadata([uuid: nil])
   end
