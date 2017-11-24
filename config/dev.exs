@@ -1,3 +1,3 @@
 use Mix.Config
 
-config :logger, backends: [:console], utc_log: true, level: :debug
+config :logger, :default_logger, default_level: :debug
