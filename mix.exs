@@ -39,8 +39,7 @@ defmodule QBot.Mixfile do
       {:distillery, "~> 1.4"},
       {:dogma, "~> 0.1.14", only: [:dev, :test, :lint]},
       {:credo, "~> 0.8.1", only: [:dev, :test, :lint]},
-      {:espec, "~> 1.4", only: :test,  app: false, env: :test,
-        git: "https://github.com/joffotron/espec", branch: "passthrough-mix-options"},
+      {:espec, "~> 1.4.6", only: :test,  app: false, env: :test},
     ]
   end
 end
