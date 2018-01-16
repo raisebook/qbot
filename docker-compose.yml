@@ -33,7 +33,6 @@ services:
       - .:/app
       - elixir_deps:/app/deps
       - elixir_build:/app/_build
-      - node_modules:/app/node_modules/
     tmpfs:
       - /tmp
     environment:
