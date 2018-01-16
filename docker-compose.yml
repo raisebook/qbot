@@ -17,6 +17,8 @@ services:
       context: .
       dockerfile: Dockerfile
     image: qbot
+    environment:
+      MIX_ENV:
     env_file:
       - ./development.env
     volumes:

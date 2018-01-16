@@ -3,3 +3,6 @@
 # Summary: Build the development Docker image
 
 docker-compose build qbot $@
+
+echo "Installing and compiling dependencies..."
+docker-compose run --rm --no-deps qbot bash -c "mix deps.get && mix deps.compile"
