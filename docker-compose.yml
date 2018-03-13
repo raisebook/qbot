@@ -24,6 +24,7 @@ services:
     volumes:
       - .:/app
       - elixir_deps:/app/deps
+      - elixir_build:/app/_build
   qbot-build-release:
     <<: *qbot
     env_file:
