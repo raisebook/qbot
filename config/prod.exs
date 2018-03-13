@@ -1,6 +1,6 @@
 use Mix.Config
 
 config :rollbax,
-  access_token: {:system, "ROLLBAR_ACCESS_TOKEN"},
+  access_token: "${ROLLBAR_TOKEN}",
   environment: "production",
   enabled: true
