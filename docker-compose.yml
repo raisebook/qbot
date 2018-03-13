@@ -24,14 +24,10 @@ services:
     volumes:
       - .:/app
       - elixir_deps:/app/deps
-      - elixir_build:/app/_build
   qbot-build-release:
     <<: *qbot
     env_file:
       - ./build-prod.env
-    volumes:
-      - .:/app
-      - elixir_deps:/app/deps
 
   deployment:
     image: raisebook/deploy:885ffe51cecef86f2d794013fbb49727950f9080
