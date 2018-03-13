@@ -11,7 +11,8 @@ defmodule QBot.Configerator do
 
   defp get_all_sqs_queues(stack) do
     with {:ok, %{body: %{resources: resources}}} <-
-           stack |> ExAws.Cloudformation.list_stack_resources()
+           stack
+           |> ExAws.Cloudformation.list_stack_resources()
            |> ExAws.request(),
          queues <-
            resources

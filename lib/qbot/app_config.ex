@@ -20,7 +20,7 @@ defmodule QBot.AppConfig do
   end
 
   defp fetch(key, default) do
-    {:ok, value} = Config.get(:bookbuild, key, default: default)
+    {:ok, value} = Config.get(:qbot, key, default: default)
 
     with [_, matched | _] <- Regex.run(~r/^\$\{(.+)\}$/, value) do
       matched
