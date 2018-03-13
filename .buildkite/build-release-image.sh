@@ -37,7 +37,11 @@ bin/qbot build-release
 echo "--- Building the Production Docker image"
 # Fix the 'root' owner permissions on the distillery produced binaries
 # They get that way because they were built inside of a docker container, with weird uid mappings
-sudo /usr/bin/fix-buildkite-agent-builds-permissions "${BUILDKITE_AGENT_NAME}"
+sudo /usr/bin/fix-buildkite-agent-builds-permissions "${BUILDKITE_AGENT_NAME}" "raisebook" "qbot"
+
+VOLUME_CONTAINER=$(docker create -v qbot_elixir_build:/_build alpine)
+docker cp "${VOLUME_CONTAINER}":/_build/${MIX_ENV}/rel ./_release
+docker rm "${VOLUME_CONTAINER}"
 
 docker build --build-arg MIX_ENV=${MIX_ENV} -t "${IMAGE}" -f Dockerfile.release .
 docker push "${IMAGE}"

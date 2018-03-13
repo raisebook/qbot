@@ -19,7 +19,7 @@ if [[ $(docker network ls | grep --count raisebook_raisebook-dev-net) -eq 0 ]]; 
   docker network create raisebook_raisebook-dev-net
 fi
 
-bin/qbot mix deps.get
+bin/qbot build
 bin/qbot test
 bin/qbot lint
 

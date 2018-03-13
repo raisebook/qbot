@@ -11,6 +11,8 @@ containerDefinitions:
   syslogDestination: <%= "tcp+tls://#{kms_decrypt('AQECAHgBe/Bo6N6P3DZu2j8rSbOworqekgIES5evTHicjBhp6AAAAHsweQYJKoZIhvcNAQcGoGwwagIBADBlBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDNHGzznV4UrDN1HF1wIBEIA42hkDPhlzZwL8FIHT2parumqRRptVioeEEky7cU0YaOR59Lxfg6vAlMaSJOAwLNR/tsGCIoqb8yc=')}" %>
   syslogAppName: QBot-Compliance
   environment:
+    - name: REPLACE_OS_VARS
+      value: "true"
     - name: AWS_REGION
       value: ap-southeast-2
     - name: AWS_STACKS

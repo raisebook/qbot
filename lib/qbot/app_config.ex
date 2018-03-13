@@ -6,7 +6,7 @@ defmodule QBot.AppConfig do
   require Config
 
   def config_poll_delay_sec, do: fetch_int(:config_poll_delay_sec, 120)
-  def workers_per_queue,     do: fetch_int(:workers_per_queue, 1)
+  def workers_per_queue, do: fetch_int(:workers_per_queue, 1)
 
   def aws_stacks do
     :aws_stacks |> fetch("development-queues") |> String.split(",")
@@ -20,17 +20,20 @@ defmodule QBot.AppConfig do
   end
 
   defp fetch(key, default) do
-    case Config.get(:qbot, key, default: default) do
-      {:ok, value} -> value
-       {:error, _} -> raise "ENV: #{key} not set"
+    {:ok, value} = Config.get(:qbot, key, default: default)
+
+    with [_, matched | _] <- Regex.run(~r/^\$\{(.+)\}$/, value) do
+      matched
+      |> System.get_env() || default
+    else
+      _ -> value
     end
   end
 
   defp fetch_int(key, default) do
     case Config.get_integer(:qbot, key, default: default) do
       {:ok, value} -> value
-       {:error, _} -> raise "ENV: #{key} not set"
+      {:error, _} -> raise "ENV: #{key} not set"
     end
   end
-
 end

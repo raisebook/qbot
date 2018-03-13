@@ -1,7 +1,7 @@
 defmodule QBot.Invoker.Lambda do
-   @moduledoc """
-   Directly Invokes the target AWS Lambda function with the payload
-   """
+  @moduledoc """
+  Directly Invokes the target AWS Lambda function with the payload
+  """
 
   alias QBot.QueueConfig
   alias SqsService.Message
@@ -10,13 +10,15 @@ defmodule QBot.Invoker.Lambda do
 
   @spec invoke!(%SqsService.Message{}, %QBot.QueueConfig{}) :: {:ok, %SqsService.Message{}}
   def invoke!(%Message{body: body} = message, %QueueConfig{target: target}) do
-    {:ok, payload} = body |> Poison.encode
+    {:ok, payload} = body |> Poison.encode()
 
-    Logger.info fn -> "Invoking #{target} with: #{inspect(payload)}" end
-    result = target |> ExAws.Lambda.invoke(payload, %{})
-                    |> ExAws.request
+    Logger.info(fn -> "Invoking #{target} with: #{inspect(payload)}" end)
 
-    Logger.info fn -> "Got #{inspect(result)} response from #{target}" end
+    result =
+      target |> ExAws.Lambda.invoke(payload, %{})
+      |> ExAws.request()
+
+    Logger.info(fn -> "Got #{inspect(result)} response from #{target}" end)
 
     case result do
       {:ok, nil} -> {:ok, message}
@@ -27,8 +29,7 @@ defmodule QBot.Invoker.Lambda do
   end
 
   defp remote_failed(error) do
-    Logger.warn error
+    Logger.warn(error)
     {:no_message, nil}
   end
-
 end

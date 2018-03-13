@@ -2,21 +2,19 @@ defmodule QBot.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :qbot,
-     version: "0.1.0",
-     elixir: "~> 1.5",
-     preferred_cli_env: [espec: :test],
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     deps: deps()]
+    [
+      app: :qbot,
+      version: "0.1.0",
+      elixir: "~> 1.5",
+      preferred_cli_env: [espec: :test],
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
+      deps: deps()
+    ]
   end
 
   def application do
-    [applications: [
-      :httpoison, :logger, :rollbax, :apex, :flex_logger,
-      :ex_aws, :ex_sqs_service, :ex_aws_sqs, :ex_aws_lambda, :ex_aws_cloudformation, :ex_aws_kms,
-      :sweet_xml, :poison, :config],
-     mod: {QBot, []}]
+    [mod: {QBot, []}]
   end
 
   defp deps do
@@ -35,10 +33,9 @@ defmodule QBot.Mixfile do
       {:poison, "~> 3.1.0"},
       {:rollbax, "~> 0.9.1"},
       {:sweet_xml, "~> 0.6.5"},
-
-      {:distillery, "~> 1.4"},
+      {:distillery, "~> 1.4", runtime: false},
       {:credo, "~> 0.8.1", only: [:dev, :test, :lint]},
-      {:espec, "~> 1.5.0", only: :test,  app: false, env: :test},
+      {:espec, "~> 1.5.0", only: :test, app: false, env: :test}
     ]
   end
 end

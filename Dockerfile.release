@@ -1,14 +1,14 @@
-FROM debian:jessie
+FROM debian:stretch
 
 RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y libssl1.0.0 libsctp1
+RUN apt-get install -y libssl1.1 libsctp1
 
 ENV LANG=C.UTF-8
 
 COPY bin/tini-static /sbin/tini-static
 
 ARG MIX_ENV
-COPY _build/${MIX_ENV}/rel /rel
+COPY _release /rel
 
 ENTRYPOINT ["/sbin/tini-static", "--"]
 CMD ["/rel/qbot/bin/qbot", "foreground"]
