@@ -7,7 +7,7 @@ set -eo pipefail
 if hash mix 2>/dev/null; then
   # Running this is an order of magnitude faster without the docker overhead, so
   # run it locally if we can
-  MIX_ENV=lint mix do credo
+  MIX_ENV=lint mix do credo, format --check-formatted --dry-run
 else
-  docker-compose run --rm --no-deps -e MIX_ENV=lint qbot mix do credo
+  docker-compose run --rm --no-deps -e MIX_ENV=lint qbot mix do credo, format --check-formatted --dry-run
 fi
