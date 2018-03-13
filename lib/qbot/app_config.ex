@@ -20,9 +20,13 @@ defmodule QBot.AppConfig do
   end
 
   defp fetch(key, default) do
-    case Config.get(:qbot, key, default: default) do
-      {:ok, value} -> value
-      {:error, _} -> raise "ENV: #{key} not set"
+    {:ok, value} = Config.get(:bookbuild, key, default: default)
+
+    with [_, matched | _] <- Regex.run(~r/^\$\{(.+)\}$/, value) do
+      matched
+      |> System.get_env() || default
+    else
+      _ -> value
     end
   end
 
