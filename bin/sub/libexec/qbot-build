@@ -4,5 +4,5 @@
 
 docker-compose build qbot $@
 
-echo "Installing and compiling dependencies..."
-docker-compose run --rm --no-deps qbot bash -c "mix deps.get && mix deps.compile"
+echo "Installing dependencies..."
+docker-compose run --rm --no-deps qbot bash -c "mix deps.get"
