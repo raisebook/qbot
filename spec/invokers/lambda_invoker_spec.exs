@@ -7,32 +7,30 @@ defmodule QBot.Invoker.LambdaSpec do
 
   describe "invoke!/2" do
     # SQS Service delivers the body with string keys
-    let payload: %{"some" => "data", "wrapped" => "here"}
-    let message: %Message{body: payload()}
-    let config: %QueueConfig{target: "arn:aws:lambda:ap-southeast-2:1234567:function:test-function"}
+    let(payload: %{"some" => "data", "wrapped" => "here"})
+    let(message: %Message{body: payload()})
+    let(config: %QueueConfig{target: "arn:aws:lambda:ap-southeast-2:1234567:function:test-function"})
 
-    subject do: Lambda.invoke!(message(), config())
+    subject(do: Lambda.invoke!(message(), config()))
 
-    before do: allow ExAws |> to(accept :request, fn req -> mock_aws(req) end)
+    before(do: allow(ExAws |> to(accept(:request, fn req -> mock_aws(req) end))))
 
     it "invokes the target lambda function" do
       subject()
-      expect ExAws |> to(accepted :request, :any, count: 1)
+      expect ExAws |> to(accepted(:request, :any, count: 1))
 
-      [{_,
-        {ExAws, :request, [%ExAws.Operation.JSON{data: data, service: :lambda}]
-      }, {:ok, nil}}] = :meck.history(ExAws)
+      [{_, {ExAws, :request, [%ExAws.Operation.JSON{data: data, service: :lambda}]}, {:ok, nil}}] = :meck.history(ExAws)
 
       # Check we invoke the lambda with encoded JSON
-      expect data |> to(eq ~s({"wrapped":"here","some":"data"}))
+      expect data |> to(eq(~s({"wrapped":"here","some":"data"})))
     end
 
     it "returns the original message" do
-      expect subject() |> to(eq {:ok, message()})
+      expect subject() |> to(eq({:ok, message()}))
     end
 
     context "error from the lambda function" do
-      let payload: %{"this" => "will fail"}
+      let(payload: %{"this" => "will fail"})
 
       it "does not raise" do
         expect(fn -> subject() end) |> to_not(raise_exception(RuntimeError, "remote fail"))
@@ -50,5 +48,4 @@ defmodule QBot.Invoker.LambdaSpec do
       _ -> {:ok, nil}
     end
   end
-
 end
