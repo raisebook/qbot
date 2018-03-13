@@ -40,7 +40,7 @@ echo "--- Building the Production Docker image"
 sudo /usr/bin/fix-buildkite-agent-builds-permissions "${BUILDKITE_AGENT_NAME}" "raisebook" "qbot"
 
 VOLUME_CONTAINER=$(docker create -v qbot_elixir_build:/_build alpine)
-docker cp "${VOLUME_CONTAINER}":/_build/${MIX_ENV}/rel/ ./_release
+docker cp "${VOLUME_CONTAINER}":/_build/${MIX_ENV}/rel ./_release
 docker rm "${VOLUME_CONTAINER}"
 
 docker build --build-arg MIX_ENV=${MIX_ENV} -t "${IMAGE}" -f Dockerfile.release .
