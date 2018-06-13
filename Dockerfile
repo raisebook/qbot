@@ -1,4 +1,4 @@
-FROM elixir:1.6.2
+FROM elixir:1.6.5
 
 RUN mkdir -p /app/deps
 

@@ -24,7 +24,8 @@ defmodule QBot.Invoker.Http do
 
   @spec http_headers(%SqsService.Message{}, %QBot.QueueConfig{}) :: map
   def http_headers(%Message{body: %{"metadata" => metadata}}, %QueueConfig{headers: headers}) do
-    headers |> Map.merge(metadata)
+    headers
+    |> Map.merge(metadata)
     |> add_headers
   end
 
