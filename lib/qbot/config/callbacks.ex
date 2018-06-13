@@ -1,4 +1,4 @@
-efmodule QBot.Config.Callbacks do
+defmodule QBot.Config.Callbacks do
   @moduledoc """
   Runtime configuration callbacks
   """
