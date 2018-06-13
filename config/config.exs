@@ -9,7 +9,7 @@ config :qbot,
 config :rollbax,
   environment: "development",
   enabled: :log,
-  callback_function: {QBot.Config.Callbacks, :rollbax}
+  config_callback: {QBot.Config.Callbacks, :rollbax}
 
 # See https://github.com/ex-aws/ex_aws/issues/365 and https://github.com/ex-aws/ex_aws/issues/516
 config :ex_aws,
