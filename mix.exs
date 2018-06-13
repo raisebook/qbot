@@ -28,13 +28,13 @@ defmodule QBot.Mixfile do
       {:ex_aws_cloudformation, "~> 2.0"},
       {:ex_sqs_service, git: "https://github.com/raisebook/ex_sqs_service", tag: "v0.2.1"},
       {:flex_logger, "~> 0.2.1"},
-      {:hackney, "~> 1.11.0"},
-      {:httpoison, "~> 1.0.0"},
+      {:hackney, "~> 1.12.1"},
+      {:httpoison, "~> 1.1.1"},
       {:poison, "~> 3.1.0"},
-      {:rollbax, "~> 0.9.1"},
+      {:rollbax, "~> 0.9.2"},
       {:sweet_xml, "~> 0.6.5"},
       {:distillery, "~> 1.4", runtime: false},
-      {:credo, "~> 0.8.1", only: [:dev, :test, :lint]},
+      {:credo, "~> 0.9.3", only: [:dev, :test, :lint]},
       {:espec, "~> 1.5.0", only: :test, app: false, env: :test}
     ]
   end

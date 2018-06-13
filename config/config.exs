@@ -7,9 +7,9 @@ config :qbot,
   only_queues: "${ONLY_QUEUES}"
 
 config :rollbax,
-  access_token: "unset-for-dev-we-only-log",
   environment: "development",
-  enabled: :log
+  enabled: :log,
+  callback_function: {QBot.Config.Callbacks, :rollbax}
 
 # See https://github.com/ex-aws/ex_aws/issues/365 and https://github.com/ex-aws/ex_aws/issues/516
 config :ex_aws,
@@ -28,10 +28,8 @@ config :ex_aws, :retries,
   max_backoff_in_ms: 5_000
 
 config :logger,
-  backends: [Rollbax.Logger, {FlexLogger, :ex_aws_logger}, {FlexLogger, :default_logger}],
+  backends: [{FlexLogger, :ex_aws_logger}, {FlexLogger, :default_logger}],
   utc_log: true
-
-config :logger, Rollbax.Logger, level: :error
 
 config :logger, :ex_aws_logger,
   logger: :console,

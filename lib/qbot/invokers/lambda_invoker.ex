@@ -15,7 +15,8 @@ defmodule QBot.Invoker.Lambda do
     Logger.info(fn -> "Invoking #{target} with: #{inspect(payload)}" end)
 
     result =
-      target |> ExAws.Lambda.invoke(payload, %{})
+      target
+      |> ExAws.Lambda.invoke(payload, %{})
       |> ExAws.request()
 
     Logger.info(fn -> "Got #{inspect(result)} response from #{target}" end)
