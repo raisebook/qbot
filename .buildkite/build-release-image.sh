@@ -20,7 +20,7 @@ esac
 
 buildkite-agent meta-data set "docker-tag-prefix" ${DOCKER_TAG_PREFIX}
 
-IMAGE=raisebook/qbot:${DOCKER_TAG_PREFIX}-${BUILDKITE_COMMIT:-local}
+IMAGE=038451313208.dkr.ecr.ap-southeast-2.amazonaws.com/qbot:${DOCKER_TAG_PREFIX}-${BUILDKITE_COMMIT:-local}
 
 function inline_image {
   printf '\033]1338;url='"$1"';alt='"$2"'\a\n'

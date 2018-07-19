@@ -3,7 +3,7 @@ family: <%= family('qbot') %>
 taskRoleArn: <%= ecs_task_role('qbot') %>
 containerDefinitions:
 - name: qbot
-  image: raisebook/qbot:<%= docker_image_tag %>
+  image: 038451313208.dkr.ecr.ap-southeast-2.amazonaws.com/qbot:<%= docker_image_tag %>
   essential: true
   cpu: 64
   memoryReservation: 192

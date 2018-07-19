@@ -14,8 +14,8 @@
         {Credo.Check.Design.AliasUsage, priority: :low},
 
         # For others you can also set parameters
-        {Credo.Check.Readability.MaxLineLength, priority: :low, max_length: 140,
-          ignore_definitions: true, ignore_specs: true, ignore_strings: true},
+        {Credo.Check.Readability.MaxLineLength,
+         priority: :low, max_length: 140, ignore_definitions: true, ignore_specs: true, ignore_strings: true},
 
         # You can also customize the exit_status of each check.
         # If you don't want TODO comments to cause `mix credo` to fail, just
@@ -24,7 +24,7 @@
 
         # To deactivate a check:
         # Put `false` as second element:
-        {Credo.Check.Design.TagFIXME, false},
+        {Credo.Check.Design.TagFIXME, false}
 
         # ... several checks omitted for readability ...
       ]

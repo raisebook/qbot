@@ -31,7 +31,7 @@ services:
       - ./build-prod.env
 
   deployment:
-    image: raisebook/deploy:885ffe51cecef86f2d794013fbb49727950f9080
+    image: 038451313208.dkr.ecr.ap-southeast-2.amazonaws.com/deploy:b3084064dfb29773e1a333bd7deebf8dece5b3eb
     volumes:
       - .:/app
     tmpfs:
