@@ -10,6 +10,6 @@ case "$1" in
     aws sqs list-queues | grep http | grep -v '\-dlq' | sed -e 's/.*038451313208\///g' | sed -e 's/",//g'
   ;;
   *)
-    docker run --rm -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY raisebook/sqs-dead-letter-requeue $@
+    docker run --rm -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY 038451313208.dkr.ecr.ap-southeast-2.amazonaws.com/sqs-dead-letter-requeue $@
   ;;
 esac

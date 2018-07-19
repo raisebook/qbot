@@ -12,6 +12,6 @@ case "$1" in
     echo development
   ;;
   *)
-    docker run --rm -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY raisebook/sqs-purge-dev-queues:latest $@
+    docker run --rm -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY 038451313208.dkr.ecr.ap-southeast-2.amazonaws.com/sqs-purge-dev-queues:latest $@
   ;;
 esac
