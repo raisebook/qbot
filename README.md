@@ -6,6 +6,8 @@ A service that acts as a dispatcher of messages from SQS Queues to either HTTP(S
 
 If the remote request fails, it will not be Acknowledged / Deleted on SQS, so any retry policies (including Dead Letter Queues) will be respected.
 
+## [Operational Notes](doc/operation.md)
+
 ## Usage
 
 ### Step 1
